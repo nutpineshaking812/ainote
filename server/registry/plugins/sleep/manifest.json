@@ -1,0 +1,44 @@
+{
+  "id": "sleep",
+  "name": "延迟等待",
+  "type": "action",
+  "category": "logic",
+  "icon": "HourglassOutlined",
+  "iconColor": "#faad14",
+  "description": "在流程中暂停指定秒数。支持设置抖动比例，使实际延迟在基准值上下随机浮动。基于 Temporal 原生 sleep 实现，挂起期间不占用 Worker 线程。",
+  "properties": [
+    {
+      "name": "seconds",
+      "label": "延迟秒数",
+      "type": "number",
+      "default": 5,
+      "required": true,
+      "description": "基准延迟秒数 (1-300)"
+    },
+    {
+      "name": "jitter",
+      "label": "随机抖动比例",
+      "type": "number",
+      "default": 0,
+      "required": false,
+      "description": "0-1 之间，例如设为 0.3 表示实际延迟在基准值的 ±30% 范围内随机。设为 0 则固定延迟。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "seconds",
+      "label": "基准延迟秒数",
+      "type": "number"
+    },
+    {
+      "name": "actualSeconds",
+      "label": "实际延迟秒数",
+      "type": "number"
+    },
+    {
+      "name": "jitter",
+      "label": "抖动比例",
+      "type": "number"
+    }
+  ]
+}

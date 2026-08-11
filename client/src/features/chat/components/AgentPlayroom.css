@@ -1,0 +1,690 @@
+/**
+ * AgentPlayroom.css
+ * Premium styling for the Multi-Agent 2D Pixel Office Playroom.
+ * Designed with a minimalist, clean Notion light-style aesthetic, warm slate typography, and soft borders.
+ */
+
+/* Main Wrapper */
+.agent-playroom-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #fdfdfc;
+  font-family:
+    'Outfit',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: #37352f;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Glassmorphism/Notion Panel Utility */
+.panel-glass {
+  background: #ffffff !important;
+  border: 1px solid #edece9 !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.panel-glass:hover {
+  border-color: #d1d5db !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Milestone Indicator Banner inside Notion Header */
+.milestone-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  padding: 4px 12px;
+  border-radius: 16px;
+  max-width: 500px;
+  flex-shrink: 0;
+}
+
+.milestone-banner.banner-gated {
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  animation: border-glow-red-light 1.5s infinite alternate;
+}
+
+.milestone-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #faad14;
+  box-shadow: 0 0 6px #faad14;
+  animation: pulse-dot 1.2s infinite alternate;
+  flex-shrink: 0;
+}
+
+.milestone-banner.banner-gated .milestone-dot {
+  background-color: #ff4d4f;
+  box-shadow: 0 0 6px #ff4d4f;
+}
+
+@keyframes border-glow-red-light {
+  0% {
+    border-color: #ffccc7;
+  }
+  100% {
+    border-color: #ff4d4f;
+    box-shadow: 0 0 8px rgba(255, 77, 79, 0.2);
+  }
+}
+
+@keyframes pulse-dot {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.boss-approve-btn {
+  background: #10b981 !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+.boss-approve-btn:hover {
+  background: #059669 !important;
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+.start-sop-btn {
+  background: #6366f1 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2) !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.start-sop-btn:hover:not(:disabled) {
+  background: #4f46e5 !important;
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Three Column Body */
+.playroom-body {
+  display: flex;
+  flex: 1;
+  padding: 0 24px 24px 24px;
+  gap: 16px;
+  overflow: hidden;
+  min-height: 0;
+  background-color: #fdfdfc;
+}
+
+/* Sidebar Columns */
+.playroom-sidebar-left {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.playroom-sidebar-right {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  min-height: 0;
+}
+
+.artifacts-deck-card .ant-card-body,
+.chat-logs-card .ant-card-body {
+  overflow: hidden !important;
+}
+
+.playroom-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+}
+
+.milestones-deck-card,
+.artifacts-deck-card,
+.chat-logs-card {
+  height: auto !important;
+}
+
+.milestones-deck-card {
+  flex: 0 0 auto !important;
+}
+
+.artifacts-deck-card {
+  flex: 1.2 !important;
+}
+
+.chat-logs-card {
+  flex: 0.8 !important;
+}
+
+.playroom-card .ant-card-head {
+  border-bottom: 1px solid #eaeaea !important;
+  padding: 0 16px !important;
+  background-color: #fafafa !important;
+}
+
+.playroom-card .ant-card-head-title {
+  color: #37352f !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.playroom-card .ant-card-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px !important;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff !important;
+}
+
+/* Kanban Board Left */
+.kanban-item {
+  background: #f7f7f5;
+  border: 1px solid #e3e3e2;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kanban-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.kanban-item.todo::before {
+  background-color: #91918e;
+}
+
+.kanban-item.progress {
+  background: #e0f2fe;
+  border-color: #bae6fd;
+}
+
+.kanban-item.progress::before {
+  background-color: #3b82f6;
+}
+
+.kanban-item.done {
+  background: #d1fae5;
+  border-color: #a7f3d0;
+  opacity: 0.9;
+}
+
+.kanban-item.done::before {
+  background-color: #10b981;
+}
+
+.kanban-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #37352f;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.kanban-meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Pulse tag effect */
+.pulse-tag {
+  animation: pulse-tag-glow 1.5s infinite alternate;
+}
+
+@keyframes pulse-tag-glow {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 4px rgba(24, 144, 255, 0.2);
+  }
+  100% {
+    transform: scale(1.02);
+    box-shadow: 0 0 8px rgba(24, 144, 255, 0.6);
+  }
+}
+
+/* Center Panel Grid */
+.playroom-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.pixel-board-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f7f7f5;
+  border: 1px solid #edece9;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Canvas Viewport */
+.canvas-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.canvas-frame canvas {
+  background-color: #1a1e29;
+  border: 6px solid #2e3440;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-sizing: border-box;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Playback Control Bar */
+.playback-controls {
+  background: #ffffff;
+  border-top: 1px solid #edece9;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.simulation-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #91918e;
+}
+
+.sim-dot.dot-active {
+  background-color: #10b981;
+  animation: pulse-dot 1s infinite alternate;
+}
+
+.speed-buttons .ant-btn-primary {
+  background-color: #6366f1 !important;
+  border-color: #6366f1 !important;
+}
+
+.speed-buttons .ant-btn-default {
+  background-color: #f3f4f6 !important;
+  border-color: #e5e7eb !important;
+  color: #4b5563 !important;
+}
+
+.speed-buttons .ant-btn-default:hover {
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+
+/* Boss Console Bottom */
+.boss-command-console {
+  flex: 0 0 auto;
+  padding: 14px 20px;
+}
+
+.boss-title-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.boss-input-row {
+  display: flex;
+  gap: 12px;
+}
+
+.boss-text-input {
+  background: #ffffff !important;
+  border-color: #d9d9d9 !important;
+  color: #37352f !important;
+  border-radius: 6px !important;
+  flex: 1;
+}
+
+.boss-text-input:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1) !important;
+}
+
+.boss-send-btn {
+  background: #6366f1 !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2) !important;
+}
+
+.boss-send-btn:hover:not(:disabled) {
+  background: #4f46e5 !important;
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3) !important;
+}
+
+.boss-send-btn:disabled {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+}
+
+/* Artifacts Printed Deck Upper Right */
+.artifacts-deck-card {
+  flex: 1.2 !important;
+}
+
+.artifacts-scroll-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.artifact-printed-card {
+  background: #ffffff;
+  border: 1px solid #e3e3e2;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  animation: print-slide-in 0.4s ease-out;
+}
+
+@keyframes print-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.artifact-printed-card:hover {
+  transform: translateY(-2px);
+  border-color: #a5b4fc;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+}
+
+.art-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 6px;
+}
+
+.art-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #37352f;
+  font-size: 13px;
+}
+
+.art-icon {
+  font-size: 15px;
+}
+.art-icon.table {
+  color: #0284c7;
+}
+.art-icon.post {
+  color: #d97706;
+}
+
+.art-card-body {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: #374151;
+  background: #f7f7f5;
+  border-radius: 6px;
+  padding: 8px 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 120px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+}
+
+.art-card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: #7c7b77;
+}
+
+/* Group Chat stream Lower Right */
+.chat-logs-card {
+  flex: 0.8 !important;
+}
+
+.chat-stream-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.chat-stream-row {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  animation: message-fade 0.3s ease-out;
+}
+
+@keyframes message-fade {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.chat-row-agent {
+  background: #f7f7f5;
+  border: 1px solid #e3e3e2;
+}
+
+.chat-row-boss {
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+}
+
+.chat-row-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.chat-speaker {
+  font-weight: 600;
+  color: #2563eb;
+  font-size: 11px;
+}
+
+.chat-speaker.speaker-boss {
+  color: #ad6800;
+}
+
+.chat-time {
+  font-size: 10px;
+  color: #7c7b77;
+}
+
+.chat-row-text {
+  color: #37352f;
+  word-break: break-all;
+}
+
+/* Scrollbar tweaks */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Elegant & Pure CSS Flex Centering for Playroom Setup Lounge */
+.playroom-empty-setup-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.playroom-empty-setup-container.state-empty {
+  justify-content: center;
+}
+
+.playroom-empty-setup-container.state-has-teams {
+  justify-content: flex-start;
+  padding: 0px 24px;
+}
+
+/* ==========================================================================
+   Notion-Style Unified Tabs Overrides for Workspace & Console Cards
+   ========================================================================== */
+.workspace-tabs,
+.console-tabs {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.workspace-tabs .ant-tabs-nav,
+.console-tabs .ant-tabs-nav {
+  margin-bottom: 0 !important;
+  background: #fafafa !important;
+  border-bottom: 1px solid #eaeaea !important;
+  padding: 0 16px !important;
+}
+
+.workspace-tabs .ant-tabs-tab,
+.console-tabs .ant-tabs-tab {
+  padding: 12px 6px !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  transition: all 0.2s ease !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+.workspace-tabs .ant-tabs-tab-active,
+.console-tabs .ant-tabs-tab-active {
+  color: #4f46e5 !important;
+}
+
+.workspace-tabs .ant-tabs-ink-bar,
+.console-tabs .ant-tabs-ink-bar {
+  background: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%) !important;
+  height: 2px !important;
+}
+
+.workspace-tabs .ant-tabs-content-holder,
+.console-tabs .ant-tabs-content-holder {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  background: #ffffff !important;
+}
+
+.workspace-tabs .ant-tabs-content,
+.console-tabs .ant-tabs-content {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.workspace-tabs .ant-tabs-tabpane,
+.console-tabs .ant-tabs-tabpane {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.workspace-tabs .ant-tabs-tabpane-hidden,
+.console-tabs .ant-tabs-tabpane-hidden {
+  display: none !important;
+}
+
+/* Seamless scrollbars in inner panels */
+.artifacts-scroll-area,
+.chat-stream-area,
+.kanban-scroll-area {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  min-height: 0 !important;
+  padding: 12px 16px !important;
+}

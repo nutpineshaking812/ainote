@@ -1,0 +1,62 @@
+{
+  "name": "DEFAULT_MEMORY_RECALL",
+  "workflowKey": "DEFAULT_MEMORY_RECALL",
+  "description": "默认的长期记忆召回流程：通过向量搜索检索相关文档片段，并合并为上下文字符串供 AI 使用。",
+  "scope": "SYSTEM",
+  "category": "AI_MEMORY_RECALL",
+  "triggerType": "CAPABILITY",
+  "status": "ACTIVE",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "capability",
+      "data": { 
+        "label": "接收查询",
+        "inputs": [
+          { "name": "query", "type": "string", "required": true },
+          { "name": "appId", "type": "string", "isSystem": true },
+          { "name": "sessionId", "type": "string", "isSystem": true }
+        ]
+      },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "search",
+      "type": "vectorSearch",
+      "data": {
+        "label": "向量检索",
+        "appId": "{{trigger.appId}}",
+        "query": "{{trigger.query}}",
+        "sessionId": "{{trigger.sessionId}}",
+        "limit": 5,
+        "minScore": 0.5
+      },
+      "position": { "x": 250, "y": 0 }
+    },
+    {
+      "id": "fetch",
+      "type": "fetchMemorySection",
+      "data": {
+        "label": "获取正文",
+        "results": "{{nodes.search.output.results}}"
+      },
+      "position": { "x": 500, "y": 0 }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "data": { 
+        "label": "结束", 
+        "outputs": [
+          { "name": "result", "type": "string", "value": "{{nodes.fetch.output.text}}" }
+        ] 
+      },
+      "position": { "x": 750, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "target": "search" },
+    { "id": "e2", "source": "search", "target": "fetch" },
+    { "id": "e3", "source": "fetch", "target": "end" }
+  ]
+}

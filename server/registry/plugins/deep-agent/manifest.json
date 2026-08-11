@@ -1,0 +1,112 @@
+{
+  "id": "deep-agent",
+  "name": "Deep Agent 智能体",
+  "description": "基于 LangChain deepagents 框架，具备高阶任务规划、长上下文管理和多步骤执行能力的深度智能体",
+  "version": "1.0.0",
+  "author": "System",
+  "type": "action",
+  "category": "aiAgent",
+  "icon": "RobotOutlined",
+  "iconColor": "#722ed1",
+  "properties": [
+    {
+      "name": "prompt",
+      "label": "系统提示词",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "userPrompt",
+      "label": "用户输入",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "model",
+      "label": "模型名称",
+      "type": "model",
+      "required": true
+    },
+    {
+      "name": "temperature",
+      "label": "温度 (Temperature)",
+      "type": "number",
+      "default": 0.7,
+      "placeholder": "0-2"
+    },
+    {
+      "name": "enableSearch",
+      "label": "启用搜索",
+      "type": "boolean",
+      "default": true,
+      "description": "开启后，LLM 将具备联网搜索能力（适用于千问等支持联网搜索的模型）"
+    },
+    {
+      "name": "jsonMode",
+      "label": "JSON 模式输出",
+      "type": "boolean",
+      "default": false,
+      "description": "开启后，强制 LLM 以 JSON 格式输出响应内容（注意：开启后可能影响工具调用行为）"
+    },
+    {
+      "name": "messageId",
+      "label": "消息 ID (用于持久化)",
+      "type": "string",
+      "required": false,
+      "placeholder": "绑定用于回写消息的 messageId (如 {{nodes.addMessage.output.messageId}})"
+    },
+    {
+      "name": "localWorkspace",
+      "label": "本地工作空间",
+      "type": "workspacePath",
+      "required": false,
+      "description": "仅在桌面端运行下生效。如果不设置，系统会根据操作系统使用默认路径（如 Mac 的 ~/Documents/ainote_workspace）。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "label": "最终回答",
+      "type": "string"
+    }
+  ],
+  "slots": [
+    {
+      "id": "memory-slot",
+      "label": "记忆",
+      "position": "bottom",
+      "left": "30%",
+      "color": "#52c41a",
+      "background": "#f6ffed",
+      "border": "1px solid #b7eb8f",
+      "className": "memory-edge"
+    },
+    {
+      "id": "knowledge-slot",
+      "label": "知识",
+      "position": "bottom",
+      "left": "50%",
+      "color": "#fa8c16",
+      "background": "#fff7e6",
+      "border": "1px solid #ffd591",
+      "className": "knowledge-edge"
+    },
+    {
+      "id": "tool-slot",
+      "label": "技能",
+      "position": "bottom",
+      "left": "70%",
+      "color": "#722ed1",
+      "background": "#f9f0ff",
+      "border": "1px solid #d3adf7",
+      "className": "skill-edge"
+    }
+  ],
+  "connectionRules": {
+    "allowFromHandle": {
+      "memory-slot": ["fetchMemory"],
+      "knowledge-slot": ["recallKnowledge", "knowledgeDocNode"],
+      "tool-slot": ["skillNode"]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "switch",
+  "name": "条件选择器 (Switch)",
+  "type": "action",
+  "category": "logic",
+  "icon": "ForkOutlined",
+  "iconColor": "#faad14",
+  "description": "多路条件判定节点。",
+  "properties": [
+    {
+      "name": "expression",
+      "label": "判定表达式",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "请输入需要判定的变量或表达式"
+    },
+    {
+      "name": "cases",
+      "label": "Cases 分支匹配列表",
+      "type": "switchCases",
+      "required": true,
+      "placeholder": "配置匹配条件与分支 Handle"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "expression",
+      "label": "输入表达式值",
+      "type": "string"
+    },
+    {
+      "name": "matchedCase",
+      "label": "匹配成功的分支",
+      "type": "string"
+    }
+  ]
+}

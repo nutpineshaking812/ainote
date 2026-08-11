@@ -1,0 +1,71 @@
+{
+  "id": "curl",
+  "name": "HTTP Request",
+  "type": "action",
+  "category": "network",
+  "icon": "GlobalOutlined",
+  "iconColor": "#722ed1",
+  "description": "发送自定义 HTTP / HTTPS 请求",
+  "properties": [
+    {
+      "name": "curlImport",
+      "label": "从 cURL 导入",
+      "type": "curlImport",
+      "required": false
+    },
+    {
+      "name": "method",
+      "label": "请求方法",
+      "type": "select",
+      "options": [
+        {"label": "GET", "value": "GET"},
+        {"label": "POST", "value": "POST"},
+        {"label": "PUT", "value": "PUT"},
+        {"label": "DELETE", "value": "DELETE"}
+      ],
+      "default": "GET",
+      "required": true
+    },
+    {
+      "name": "url",
+      "label": "请求 URL",
+      "type": "variableInput",
+      "default": "",
+      "required": true,
+      "placeholder": "https://api.example.com"
+    },
+    {
+      "name": "headers",
+      "label": "请求头 (Headers)",
+      "type": "variableInput",
+      "default": "",
+      "required": false,
+      "placeholder": "{\n  \"Authorization\": \"Bearer token\"\n}"
+    },
+    {
+      "name": "body",
+      "label": "请求体 (Body)",
+      "type": "variableInput",
+      "default": "",
+      "required": false,
+      "placeholder": "请输入 JSON 或文本请求体"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "status",
+      "label": "状态码",
+      "type": "number"
+    },
+    {
+      "name": "statusText",
+      "label": "状态描述",
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "label": "返回数据",
+      "type": "object"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+.tabbed-infinite-list-tabs .ant-tabs-content {
+  height: 100%;
+}
+
+/* Highlight the active tab for clearer selection state */
+.tabbed-infinite-list-tabs .ant-tabs-tab {
+  margin: 0; /* compact vertical stack */
+  border-radius: 0px;
+}
+
+.tabbed-infinite-list-tabs .ant-tabs-tab.ant-tabs-tab-active {
+  background: #f0f0f0;
+}
+
+/* Active tab text color depends on nav mode */
+.tabbed-infinite-list.nav-mode-items
+  .tabbed-infinite-list-tabs
+  .ant-tabs-tab.ant-tabs-tab-active
+  .ant-tabs-tab-btn {
+  color: var(--ant-tabs-item-color);
+}
+
+.tabbed-infinite-list.nav-mode-tabs
+  .tabbed-infinite-list-tabs
+  .ant-tabs-tab.ant-tabs-tab-active
+  .ant-tabs-tab-btn {
+  color: var(--ant-tabs-item-selected-color);
+}
+
+.tabbed-infinite-list-tabs .ant-tabs-nav-list {
+  padding: 0px; /* small inset to see the radius/background */
+}

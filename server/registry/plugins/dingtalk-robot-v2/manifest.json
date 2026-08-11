@@ -1,0 +1,80 @@
+{
+  "id": "dingtalk-robot-v2",
+  "name": "钉钉对话机器人",
+  "type": "trigger",
+  "category": "Communication",
+  "icon": "MessageOutlined",
+  "iconColor": "#1890ff",
+  "description": "通过钉钉插件实现完整的 Stream 模式接入，支持触发和反馈。",
+  "features": ["status_tracking"],
+  "properties": [
+    {
+      "name": "clientId",
+      "label": "Client ID",
+      "type": "string",
+      "required": true,
+      "placeholder": "请输入 App 的 Client ID"
+    },
+    {
+      "name": "clientSecret",
+      "label": "Client Secret",
+      "type": "string",
+      "required": true,
+      "placeholder": "请输入 App 的 Client Secret"
+    },
+    {
+      "name": "templateId",
+      "label": "卡片模板 ID",
+      "type": "string",
+      "required": false,
+      "placeholder": "互动卡片模板 ID (可选)",
+      "description": "如果需要发送互动卡片，请提供此 ID"
+    },
+    {
+      "name": "robotCode",
+      "label": "Robot Code",
+      "type": "string",
+      "required": false,
+      "placeholder": "机器人编码 (通常同 Client ID)",
+      "description": "用于标识机器人的编码"
+    },
+    {
+      "name": "matchType",
+      "label": "匹配模式",
+      "type": "select",
+      "default": "ALL_TEXT",
+      "options": [
+        { "label": "全量匹配", "value": "ALL_TEXT" },
+        { "label": "关键词匹配", "value": "KEYWORD" }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "query",
+      "label": "用户输入内容",
+      "type": "string"
+    },
+    {
+      "name": "senderId",
+      "label": "发送者 ID",
+      "type": "string"
+    },
+    {
+      "name": "senderNick",
+      "label": "发送者昵称",
+      "type": "string"
+    },
+    {
+      "name": "conversationId",
+      "label": "会话 ID",
+      "type": "string"
+    },
+    {
+      "name": "dingtalkContext",
+      "label": "钉钉上下文 (Context)",
+      "type": "object",
+      "description": "包含 outTrackId 等关键信息，用于后续节点的卡片反馈。"
+    }
+  ]
+}

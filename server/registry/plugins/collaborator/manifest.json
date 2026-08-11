@@ -1,0 +1,27 @@
+{
+  "id": "collaborator",
+  "name": "协同数字员工",
+  "type": "action",
+  "category": "aiAgent",
+  "icon": "TeamOutlined",
+  "iconColor": "#13c2c2",
+  "isAddon": true,
+  "allowedSlots": ["collaborator-slot"],
+  "description": "加入一位协同数字员工到主 Agent 的团队中，形成多角色圆桌会协同。",
+  "properties": [
+    {
+      "name": "employeeId",
+      "label": "选择协同员工",
+      "type": "digitalEmployeeSelector",
+      "required": true,
+      "placeholder": "请选择数字员工"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "employeeId",
+      "label": "员工 ID",
+      "type": "string"
+    }
+  ]
+}

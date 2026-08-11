@@ -1,0 +1,23 @@
+# Dependencies
+/logs
+
+# Deploy tools (independent repo)
+/lowcode-deploy
+
+# Environment variables
+.env
+.env.*.local
+
+# Temporary files
+*.tmp.log
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+temporal.db
+qdrant_bin/
+memory.db
+docker/postgres/data/
+docker/qdrant/data/

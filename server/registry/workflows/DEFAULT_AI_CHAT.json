@@ -1,0 +1,414 @@
+{
+  "name": "DEFAULT_AI_CHAT",
+  "workflowKey": "DEFAULT_AI_CHAT",
+  "description": null,
+  "nodes": [
+    {
+      "id": "start",
+      "data": {
+        "label": "开始",
+        "inputs": [
+          {
+            "name": "message",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "conversationId",
+            "type": "string",
+            "isSystem": true
+          },
+          {
+            "name": "sessionId",
+            "type": "string",
+            "isSystem": true
+          },
+          {
+            "name": "sessionName",
+            "type": "string",
+            "isSystem": true
+          },
+          {
+            "name": "appId",
+            "type": "string",
+            "isSystem": true
+          },
+          {
+            "name": "docId",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "refs",
+            "type": "array",
+            "required": false
+          },
+          {
+            "name": "skillIds",
+            "type": "array",
+            "required": false
+          },
+          {
+            "name": "systemPrompt",
+            "type": "prompt",
+            "label": "系统提示词 (Persona)",
+            "required": false
+          },
+          {
+            "name": "knowledgeSetIds",
+            "type": "array",
+            "label": "关联知识库 (Context)",
+            "required": false
+          },
+          {
+            "name": "model",
+            "type": "string",
+            "label": "智能体引擎 (Brain Model)",
+            "required": false
+          }
+        ]
+      },
+      "type": "capability",
+      "position": {
+        "x": -105,
+        "y": 0
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "ensure",
+      "data": {
+        "type": "DOCUMENT",
+        "label": "确定会话",
+        "conversationId": "{{trigger.conversationId}}"
+      },
+      "type": "ensureConvo",
+      "outputs": {
+        "title": {
+          "type": "string",
+          "description": "Conversation title"
+        },
+        "conversationId": {
+          "type": "string",
+          "description": "Database Conversation ID"
+        }
+      },
+      "position": {
+        "x": 200,
+        "y": 0
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      }
+    },
+    {
+      "id": "log_user",
+      "data": {
+        "role": "user",
+        "label": "记录并开启回复",
+        "content": "{{trigger.message}}",
+        "openBubble": true,
+        "conversationId": "{{nodes.ensure.output.conversationId}}"
+      },
+      "type": "addMessage",
+      "position": {
+        "x": 500,
+        "y": 0
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      }
+    },
+    {
+      "id": "mem",
+      "data": {
+        "label": "加载上下文/记忆",
+        "conversationId": "{{nodes.ensure.output.conversationId}}"
+      },
+      "type": "fetchMemory",
+      "position": {
+        "x": -240,
+        "y": 450
+      },
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "llm",
+      "data": {
+        "refs": "{{trigger.refs}}",
+        "docId": "{{trigger.docId}}",
+        "label": "AI 智能体",
+        "model": "{{trigger.model}}",
+        "prompt": "{{trigger.systemPrompt}}\n\n## 引用上下文\n- 当前文档 ID: {{trigger.docId}}\n- 引用资源列表: {{trigger.refs | json}}\n\n## 长期记忆与知识库\n你可以通过 `recall_memory` 工具搜索历史会话中记录的所有事实 (Fact) 和故事背景。对于任何关于“刚才说过的”、“以前提到过的”或特定业务知识的内容，请优先使用检索工具。\n\n## 专家派发与模板执行规则\n当你触发特定的模板/SOP技能处理文档时：\n1. **素材优先**：必须先获取素材正文，严禁将用户指令当素材传入。\n2. **禁止预处理**：在准备工具参数时，请直接传入原始素材，【严禁】在参数中自行对素材进行预先的格式化或摘要处理。\n3. **输出禁令**：子技能产生的处理结果已通过流式实时推送给用户。你收到系统反馈后，【严禁再次重复、摘要或展示该结果的正文】。\n4. **完结指令**：任务处理完成后，只需输出一句非常简短的对话确认（如：“已为您整理完成。”）或者提供针对结果的下一步操作建议。",
+        "sessionId": "{{trigger.sessionId}}",
+        "userPrompt": "{{trigger.message}}",
+        "sessionName": "{{trigger.sessionName}}",
+        "enableSearch": true,
+        "enableThinking": true,
+        "connectedSkillCount": 20
+      },
+      "type": "aiAgent",
+      "position": {
+        "x": -105,
+        "y": 195
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "recall",
+      "data": {
+        "label": "知识召回",
+        "workflowId": "DEFAULT_MEMORY_RECALL"
+      },
+      "type": "recallKnowledge",
+      "position": {
+        "x": -120,
+        "y": 450
+      },
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "read_cursor",
+      "data": {
+        "key": "distill_cursor_{{trigger.sessionId}}",
+        "label": "读取提炼游标"
+      },
+      "type": "readUserProperty",
+      "position": {
+        "x": 195,
+        "y": 195
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "fetch_new_msgs",
+      "data": {
+        "label": "查询增量消息",
+        "afterTime": "{{nodes.read_cursor.output.value}}",
+        "conversationId": "{{nodes.ensure.output.conversationId}}"
+      },
+      "type": "loadMemory",
+      "position": {
+        "x": 495,
+        "y": 195
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "if_distill",
+      "data": {
+        "label": "增量消息回写?",
+        "condition": "{{nodes.fetch_new_msgs.output.count}} >= 10"
+      },
+      "type": "if",
+      "position": {
+        "x": 195,
+        "y": 405
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "update_cursor",
+      "data": {
+        "key": "distill_cursor_{{trigger.sessionId}}",
+        "label": "乐观写入游标",
+        "value": "{{nodes.fetch_new_msgs.output.latestMessageTime}}"
+      },
+      "type": "writeUserProperty",
+      "position": {
+        "x": 510,
+        "y": 405
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "trigger_distill",
+      "data": {
+        "async": true,
+        "label": "异步触发提炼",
+        "params": {
+          "appId": "{{trigger.appId}}",
+          "content": "{{nodes.fetch_new_msgs.output.plainText | json}}",
+          "sessionId": "{{trigger.sessionId}}",
+          "sessionName": "{{trigger.sessionName}}"
+        },
+        "workflowId": "DEFAULT_MEMORY_DISTILL"
+      },
+      "type": "subworkflow",
+      "position": {
+        "x": 795,
+        "y": 405
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "skills",
+      "data": {
+        "label": "全局能力",
+        "skillIds": "{{trigger.skillIds}}"
+      },
+      "type": "skillNode",
+      "position": {
+        "x": 30,
+        "y": 465
+      },
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "end",
+      "data": {
+        "label": "结束",
+        "outputs": []
+      },
+      "type": "end",
+      "position": {
+        "x": 795,
+        "y": 600
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "start",
+      "target": "ensure"
+    },
+    {
+      "id": "e2",
+      "source": "ensure",
+      "target": "log_user"
+    },
+    {
+      "id": "e3",
+      "source": "log_user",
+      "target": "llm"
+    },
+    {
+      "id": "e5",
+      "source": "mem",
+      "target": "llm",
+      "targetHandle": "memory-slot"
+    },
+    {
+      "id": "e6",
+      "source": "llm",
+      "target": "read_cursor"
+    },
+    {
+      "id": "e10",
+      "source": "read_cursor",
+      "target": "fetch_new_msgs"
+    },
+    {
+      "id": "e11",
+      "source": "fetch_new_msgs",
+      "target": "if_distill"
+    },
+    {
+      "id": "e12",
+      "source": "if_distill",
+      "target": "update_cursor",
+      "sourceHandle": "true"
+    },
+    {
+      "id": "e13",
+      "source": "update_cursor",
+      "target": "trigger_distill"
+    },
+    {
+      "id": "e7",
+      "source": "skills",
+      "target": "llm",
+      "targetHandle": "tool-slot"
+    },
+    {
+      "id": "e8",
+      "source": "recall",
+      "target": "llm",
+      "targetHandle": "knowledge-slot"
+    },
+    {
+      "id": "e14",
+      "source": "trigger_distill",
+      "target": "end"
+    },
+    {
+      "id": "e15",
+      "source": "if_distill",
+      "target": "end",
+      "sourceHandle": "false"
+    }
+  ],
+  "triggerType": "CAPABILITY",
+  "skillConfig": {
+    "description": "",
+    "inputSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "name": "JS开发工程师 的逻辑引擎",
+  "description": "针对数字人 JS开发工程师 自动生成的对话逻辑",
+  "nodes": [
+    {
+      "id": "start",
+      "data": {
+        "label": "用户输入",
+        "inputs": [
+          {
+            "name": "systemPrompt",
+            "type": "prompt",
+            "label": "人格设定 (Persona)",
+            "required": true,
+            "description": "定义数字员工的角色、语气和行为规范"
+          },
+          {
+            "name": "message",
+            "type": "string",
+            "label": "用户消息",
+            "required": true,
+            "description": "用户消息"
+          },
+          {
+            "name": "model",
+            "type": "model",
+            "label": "推理模型 (Brain)",
+            "required": true,
+            "description": "驱动数字员工思考的 LLM 模型"
+          },
+          {
+            "name": "knowledgeSetIds",
+            "type": "knowledge",
+            "label": "挂载知识库 (RAG)",
+            "required": false,
+            "description": "数字员工可搜索的私有知识库范围"
+          },
+          {
+            "name": "skillIds",
+            "type": "skills",
+            "label": "专业能力 (Skills)",
+            "required": false,
+            "description": "赋予数字员工执行外部操作的能力"
+          },
+          {
+            "name": "orgId",
+            "label": "组织 ID",
+            "type": "string",
+            "required": false,
+            "isSystem": true,
+            "description": "Organization identifier"
+          },
+          {
+            "name": "appId",
+            "label": "应用 ID",
+            "type": "string",
+            "required": false,
+            "isSystem": true,
+            "description": "Application identifier"
+          },
+          {
+            "name": "userId",
+            "label": "用户 ID",
+            "type": "string",
+            "required": false,
+            "isSystem": true,
+            "description": "Actor user ID"
+          },
+          {
+            "name": "sessionId",
+            "label": "Session ID",
+            "type": "string",
+            "required": false,
+            "isSystem": true,
+            "description": "Web session identifier"
+          },
+          {
+            "name": "sessionName",
+            "label": "会话名称",
+            "type": "string",
+            "required": false,
+            "isSystem": true,
+            "description": "Display name of the session"
+          }
+        ]
+      },
+      "type": "capability",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 150,
+        "y": 900
+      },
+      "selected": false
+    },
+    {
+      "id": "aiAgent_B9BR",
+      "data": {
+        "refs": "{{trigger.refs}}",
+        "docId": "{{trigger.docId}}",
+        "label": "AI 智能体",
+        "model": "qwen3.5-plus",
+        "prompt": "{{trigger.systemPrompt}}\n\n## 引用上下文\n- 当前文档 ID: {{trigger.docId}}\n- 引用资源列表: {{trigger.refs | json}}\n\n## 长期记忆与知识库\n你可以通过 `recall_memory` 工具搜索历史会话中记录的所有事实 (Fact) 和故事背景。对于任何关于“刚才说过的”、“以前提到过的”或特定业务知识的内容，请优先使用检索工具。\n\n## 专家派发与模板执行规则\n当你触发特定的模板/SOP技能处理文档时：\n1. **素材优先**：必须先获取素材正文，严禁将用户指令当素材传入。\n2. **禁止预处理**：在准备工具参数时，请直接传入原始素材，【严禁】在参数中自行对素材进行预先的格式化或摘要处理。\n3. **输出禁令**：子技能产生的处理结果已通过流式实时推送给用户。你收到系统反馈后，【严禁再次重复、摘要或展示该结果的正文】。\n4. **完结指令**：任务处理完成后，只需输出一句非常简短的对话确认（如：“已为您整理完成。”）或者提供针对结果的下一步操作建议。",
+        "sessionId": "{{trigger.sessionId}}",
+        "userPrompt": "{{trigger.message}}",
+        "sessionName": "{{trigger.sessionName}}",
+        "enableSearch": true,
+        "enableThinking": true,
+        "connectedSkillCount": 20
+      },
+      "type": "aiAgent",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 150,
+        "y": 1095
+      },
+      "selected": false
+    },
+    {
+      "id": "skillNode_9NKU",
+      "data": {
+        "label": "全局能力",
+        "skillIds": "{{trigger.skillIds}}"
+      },
+      "type": "skillNode",
+      "dragging": false,
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "position": {
+        "x": 285,
+        "y": 1365
+      },
+      "selected": false
+    },
+    {
+      "id": "end",
+      "data": {
+        "label": "结束",
+        "outputs": []
+      },
+      "type": "end",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 585,
+        "y": 1095
+      },
+      "selected": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__skillNode_9NKUaddon-output-aiAgent_B9BRtool-slot",
+      "type": "default",
+      "style": {
+        "stroke": "#722ed1",
+        "strokeWidth": 3,
+        "strokeDasharray": "5,5"
+      },
+      "source": "skillNode_9NKU",
+      "target": "aiAgent_B9BR",
+      "animated": true,
+      "className": "skill-edge",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#722ed1"
+      },
+      "sourceHandle": "addon-output",
+      "targetHandle": "tool-slot"
+    },
+    {
+      "type": "default",
+      "animated": true,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#b1b1b7"
+      },
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "source": "start",
+      "target": "aiAgent_B9BR",
+      "id": "xy-edge__start-aiAgent_B9BR"
+    },
+    {
+      "type": "default",
+      "animated": true,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#b1b1b7"
+      },
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "source": "aiAgent_B9BR",
+      "target": "end",
+      "targetHandle": "in",
+      "id": "xy-edge__aiAgent_B9BR-endin"
+    }
+  ],
+  "triggerType": "CAPABILITY",
+  "skillConfig": {
+    "name": "JS开发工程师 的逻辑引擎",
+    "description": "",
+    "inputSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}

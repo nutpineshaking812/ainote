@@ -1,0 +1,1436 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AiNote Chat SDK — 集成演示</title>
+    <style>
+      /* ======== Reset & Variables ======== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --c-bg: #f5f6fa;
+        --c-surface: #ffffff;
+        --c-primary: #6366f1;
+        --c-primary-h: #5558e6;
+        --c-success: #22c55e;
+        --c-warning: #f59e0b;
+        --c-info: #3b82f6;
+        --c-accent: #ec4899;
+        --c-text: #1e293b;
+        --c-text-2: #64748b;
+        --c-text-3: #94a3b8;
+        --c-border: #e2e8f0;
+        --c-border-l: #f1f5f9;
+        --radius: 12px;
+        --radius-sm: 8px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+        --shadow: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+        --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+        --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        background: var(--c-bg);
+        color: var(--c-text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* ======== Top Navigation ======== */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(16px) saturate(180%);
+        border-bottom: 1px solid var(--c-border-l);
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+      }
+      .nav__brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--c-text);
+      }
+      .nav__brand .icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+      }
+      .nav__link {
+        color: var(--c-text-2);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color var(--transition);
+      }
+      .nav__link:hover {
+        color: var(--c-primary);
+      }
+
+      /* ======== Hero ======== */
+      .hero {
+        text-align: center;
+        padding: 64px 24px 48px;
+        background: linear-gradient(170deg, #eef2ff 0%, #f5f6fa 40%, #fdf2f8 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: '';
+        position: absolute;
+        width: 460px;
+        height: 460px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+        top: -80px;
+        right: -100px;
+        border-radius: 50%;
+      }
+      .hero::after {
+        content: '';
+        position: absolute;
+        width: 340px;
+        height: 340px;
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+        bottom: -60px;
+        left: -80px;
+        border-radius: 50%;
+      }
+      .hero__content {
+        position: relative;
+        z-index: 1;
+      }
+      .hero h1 {
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 12px;
+      }
+      .hero p {
+        font-size: 17px;
+        color: var(--c-text-2);
+        max-width: 560px;
+        margin: 0 auto 28px;
+      }
+      .hero__badges {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        background: #fff;
+        color: var(--c-text-2);
+        box-shadow: var(--shadow-sm);
+      }
+      .badge .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .badge .dot--green {
+        background: var(--c-success);
+      }
+      .badge .dot--blue {
+        background: var(--c-info);
+      }
+      .badge .dot--amber {
+        background: var(--c-warning);
+      }
+
+      /* ======== Layout ======== */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .section {
+        padding: 48px 0;
+      }
+      .section__header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .section__title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--c-text);
+      }
+      .section__sub {
+        font-size: 14px;
+        color: var(--c-text-3);
+      }
+
+      /* ======== Cards Grid ======== */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 20px;
+      }
+      .card {
+        background: var(--c-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--c-border-l);
+        overflow: hidden;
+        transition: box-shadow var(--transition);
+      }
+      .card:hover {
+        box-shadow: var(--shadow);
+      }
+      .card__head {
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--c-border-l);
+      }
+      .card__icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .card__icon--float {
+        background: #eef2ff;
+        color: var(--c-primary);
+      }
+      .card__icon--panel {
+        background: #f0fdf4;
+        color: var(--c-success);
+      }
+      .card__icon--single {
+        background: #fff7ed;
+        color: var(--c-warning);
+      }
+      .card__icon--api {
+        background: #fdf2f8;
+        color: var(--c-accent);
+      }
+      .card__head h3 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .card__head .tag {
+        margin-left: auto;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        background: #f1f5f9;
+        color: var(--c-text-3);
+      }
+      .card__body {
+        padding: 20px 24px;
+      }
+      .card__desc {
+        font-size: 14px;
+        color: var(--c-text-2);
+        margin-bottom: 16px;
+        line-height: 1.7;
+      }
+
+      /* ======== Code Block ======== */
+      .code {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        padding: 18px 20px;
+        border-radius: var(--radius-sm);
+        font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+        font-size: 12.5px;
+        line-height: 1.75;
+        overflow-x: auto;
+        white-space: pre;
+        position: relative;
+      }
+      .code .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #cdd6f4;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 11px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .code:hover .copy-btn,
+      .code:focus-within .copy-btn {
+        opacity: 1;
+      }
+      .code .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.22);
+      }
+      .hl-tag {
+        color: #89b4fa;
+      }
+      .hl-attr {
+        color: #a6e3a1;
+      }
+      .hl-val {
+        color: #fab387;
+      }
+      .hl-fn {
+        color: #cba6f7;
+      }
+      .hl-str {
+        color: #a6e3a1;
+      }
+      .hl-cmt {
+        color: #6c7086;
+      }
+      .hl-key {
+        color: #f38ba8;
+      }
+
+      /* ======== Config Panel ======== */
+      .config-bar {
+        background: var(--c-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--c-border-l);
+        margin-bottom: 32px;
+        overflow: hidden;
+      }
+      .config-bar__toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--c-text);
+        transition: background 0.15s;
+      }
+      .config-bar__toggle:hover {
+        background: #f8fafc;
+      }
+      .config-bar__toggle .arrow {
+        margin-left: auto;
+        transition: transform var(--transition);
+        color: var(--c-text-3);
+      }
+      .config-bar.open .config-bar__toggle .arrow {
+        transform: rotate(180deg);
+      }
+      .config-bar__body {
+        display: none;
+        padding: 0 24px 24px;
+        border-top: 1px solid var(--c-border-l);
+      }
+      .config-bar.open .config-bar__body {
+        display: block;
+      }
+      .config-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--c-text-2);
+        margin-bottom: 6px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid var(--c-border);
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        color: var(--c-text);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition);
+        background: #fafbfc;
+      }
+      .field input:focus,
+      .field select:focus {
+        outline: none;
+        border-color: var(--c-primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        background: #fff;
+      }
+      .field input::placeholder {
+        color: var(--c-text-3);
+      }
+      .btn-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 24px;
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all var(--transition);
+      }
+      .btn--primary {
+        background: var(--c-primary);
+        color: #fff;
+      }
+      .btn--primary:hover {
+        background: var(--c-primary-h);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+      }
+      .btn--outline {
+        background: #fff;
+        color: var(--c-primary);
+        border: 1.5px solid var(--c-primary);
+      }
+      .btn--outline:hover {
+        background: #eef2ff;
+      }
+      .btn--danger {
+        background: #ef4444;
+        color: #fff;
+      }
+      .btn--danger:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+      }
+      .btn--ghost {
+        background: transparent;
+        color: var(--c-text-2);
+      }
+      .btn--ghost:hover {
+        background: #f1f5f9;
+      }
+      .btn--sm {
+        padding: 6px 14px;
+        font-size: 13px;
+        border-radius: 6px;
+      }
+
+      /* ======== Status Indicator ======== */
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--c-text-2);
+        margin-left: auto;
+      }
+      .status__dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--c-text-3);
+        transition: background var(--transition);
+      }
+      .status--online .status__dot {
+        background: var(--c-success);
+      }
+      .status--offline .status__dot {
+        background: var(--c-text-3);
+      }
+      .status--error .status__dot {
+        background: #ef4444;
+      }
+
+      /* ======== Preview Area ======== */
+      .preview-area {
+        background: var(--c-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--c-border-l);
+        overflow: hidden;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .preview-mock {
+        width: 100%;
+        padding: 48px 32px;
+        text-align: center;
+      }
+      .preview-mock__page {
+        max-width: 720px;
+        margin: 0 auto;
+        text-align: left;
+        background: #fafbfc;
+        border-radius: var(--radius);
+        padding: 32px;
+        border: 1px dashed var(--c-border);
+      }
+      .preview-mock__page h4 {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+      .preview-mock__page p {
+        font-size: 14px;
+        color: var(--c-text-2);
+        margin-bottom: 16px;
+      }
+      .preview-mock__page .mock-line {
+        height: 12px;
+        border-radius: 4px;
+        background: var(--c-border-l);
+        margin-bottom: 10px;
+      }
+      .preview-mock__page .mock-line:nth-child(4) {
+        width: 80%;
+      }
+      .preview-mock__page .mock-line:nth-child(5) {
+        width: 60%;
+      }
+
+      .preview-hint {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        color: var(--c-text-3);
+        font-size: 14px;
+      }
+      .preview-hint em {
+        font-style: normal;
+        color: var(--c-primary);
+        font-weight: 700;
+      }
+      .preview-hint__icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #eef2ff 0%, #fdf2f8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 4px;
+      }
+
+      /* ======== #chat-sidebar ======== */
+      #chat-sidebar {
+        width: 100%;
+        height: 480px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--c-border);
+        overflow: hidden;
+      }
+      #chat-sidebar.hidden {
+        display: none;
+      }
+
+      /* ======== Dock container ======== */
+      #dock-container {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 9000;
+      }
+
+      /* ======== Footer ======== */
+      .footer {
+        text-align: center;
+        padding: 40px 24px;
+        color: var(--c-text-3);
+        font-size: 13px;
+        border-top: 1px solid var(--c-border-l);
+      }
+    .footer code {
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--c-text-2);
+    }
+
+    /* ======== Event Log ======== */
+    .event-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    @media (max-width: 768px) {
+      .event-panel { grid-template-columns: 1fr; }
+    }
+    .event-log {
+      background: #1e1e2e; color: #cdd6f4;
+      border-radius: var(--radius-sm); padding: 12px 16px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px; line-height: 1.8;
+      max-height: 260px; overflow-y: auto;
+    }
+    .event-log__empty { color: #6c7086; text-align: center; padding: 16px 0; }
+    .event-log__item { display: flex; gap: 8px; align-items: baseline; }
+    .event-log__time { color: #6c7086; white-space: nowrap; font-size: 11px; }
+    .event-log__type { color: var(--c-accent); font-weight: 600; white-space: nowrap; }
+    .event-log__data { color: #a6e3a1; word-break: break-all; }
+    .event-log__label {
+      font-size: 13px; font-weight: 600; color: var(--c-text);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .event-log__label .count {
+      font-size: 11px; font-weight: 500; color: var(--c-text-3);
+      background: #f1f5f9; padding: 2px 8px; border-radius: 10px;
+    }
+    .transcript-box {
+      background: #fafbfc; border-radius: var(--radius-sm);
+      padding: 14px 18px; max-height: 260px; overflow-y: auto;
+      font-size: 13px; line-height: 1.7; color: var(--c-text);
+      border: 1px solid var(--c-border-l);
+    }
+    .transcript-box__empty { color: var(--c-text-3); font-style: italic; text-align: center; padding: 24px 0; }
+    .transcript-box .ts-user { color: var(--c-primary); font-weight: 600; margin-top: 8px; }
+    .transcript-box .ts-ai { color: var(--c-text); }
+    .transcript-box .ts-node { color: var(--c-warning); font-size: 12px; padding: 4px 8px; background: #fffbeb; border-radius: 4px; margin: 6px 0; }
+    .transcript-box .ts-node::before { content: '🔧 工作流节点: '; font-weight: 600; }
+
+      /* ======== Toast ======== */
+      .toast {
+        position: fixed;
+        top: 72px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 9999;
+        box-shadow: var(--shadow-lg);
+        opacity: 0;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        pointer-events: none;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(4px);
+      }
+      .toast--success {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+      }
+      .toast--error {
+        background: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="nav">
+      <div class="nav__brand">
+        <div class="icon">⚡</div>
+        <span>AiNote Chat SDK</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px">
+        <a class="nav__link" href="#scenarios">集成场景</a>
+        <a class="nav__link" href="#config">在线调试</a>
+        <a class="nav__link" href="#preview">实时预览</a>
+        <div id="status-indicator" class="status status--offline">
+          <span class="status__dot"></span> 未连接
+        </div>
+      </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+      <div class="hero__content">
+        <h1>一行代码，接入 AI</h1>
+        <p>
+          将数字员工聊天服务嵌入任何 Web 页面 —— 支持浮动弹窗、侧栏嵌入、全屏、纯 API 调用四种模式
+        </p>
+        <div class="hero__badges">
+          <div class="badge"><span class="dot dot--green"></span> 开箱即用</div>
+          <div class="badge"><span class="dot dot--blue"></span> 零侵入布局</div>
+          <div class="badge"><span class="dot dot--amber"></span> Portal 渲染</div>
+          <div class="badge"><span class="dot dot--blue"></span> 自动鉴权</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SCENARIOS ========== -->
+    <section class="section" id="scenarios">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <div class="section__title">四组集成场景</div>
+            <div class="section__sub" style="margin-top: 4px">
+              覆盖最常见的业务接入场景，点击卡片直接初始化
+            </div>
+          </div>
+        </div>
+
+        <div class="cards">
+          <!-- 场景 1：浮动弹窗（默认） -->
+          <div class="card" id="card-float">
+            <div class="card__head">
+              <div class="card__icon card__icon--float">💬</div>
+              <h3>浮动弹窗</h3>
+              <span class="tag">推荐</span>
+            </div>
+            <div class="card__body">
+              <p class="card__desc">
+                聊天窗口以浮动弹窗方式覆盖在页面上方，不占用页面布局空间。Dock
+                按钮固定于右侧边缘，点击展开员工面板。
+              </p>
+              <div class="code">
+                <span class="hl-cmt">// 电商首页、后台管理页等</span>
+                <span class="hl-key">AiNoteChat</span>.<span class="hl-fn">init</span>({
+                <span class="hl-attr">appId</span>: <span class="hl-str">'your-app-id'</span>,
+                <span class="hl-attr">apiKey</span>: <span class="hl-str">'sk-...'</span>,
+                <span class="hl-attr">container</span>:
+                <span class="hl-str">'#dock-container'</span>,
+                <span class="hl-attr">chatMode</span>: <span class="hl-str">'floating'</span>,
+                <span class="hl-cmt">// 浮动模式</span> });
+              </div>
+              <button
+                class="btn btn--primary btn--sm"
+                style="margin-top: 14px"
+                onclick="applyScenario('floating')"
+              >
+                🚀 快速体验
+              </button>
+            </div>
+          </div>
+
+          <!-- 场景 2：侧栏嵌入 -->
+          <div class="card" id="card-panel">
+            <div class="card__head">
+              <div class="card__icon card__icon--panel">📋</div>
+              <h3>侧栏嵌入</h3>
+              <span class="tag">panel</span>
+            </div>
+            <div class="card__body">
+              <p class="card__desc">
+                聊天面板内嵌到页面侧栏区域，与主内容区并列显示。适合知识库、文档编辑、数据分析等需要常驻对话的场景。
+              </p>
+              <div class="code">
+                <span class="hl-cmt">// 知识库、文档编辑页</span>
+                <span class="hl-key">AiNoteChat</span>.<span class="hl-fn">init</span>({
+                <span class="hl-attr">appId</span>: <span class="hl-str">'your-app-id'</span>,
+                <span class="hl-attr">apiKey</span>: <span class="hl-str">'sk-...'</span>,
+                <span class="hl-attr">container</span>:
+                <span class="hl-str">'#dock-container'</span>,
+                <span class="hl-attr">chatMode</span>: <span class="hl-str">'panel'</span>,
+                <span class="hl-attr">chatContainer</span>:
+                <span class="hl-str">'#chat-sidebar'</span>, <span class="hl-cmt">// 侧栏</span> });
+              </div>
+              <button
+                class="btn btn--outline btn--sm"
+                style="margin-top: 14px"
+                onclick="applyScenario('panel')"
+              >
+                🚀 快速体验
+              </button>
+            </div>
+          </div>
+
+          <!-- 场景 3：单员工模式 -->
+          <div class="card" id="card-single">
+            <div class="card__head">
+              <div class="card__icon card__icon--single">👤</div>
+              <h3>单员工模式</h3>
+              <span class="tag">employeeId</span>
+            </div>
+            <div class="card__body">
+              <p class="card__desc">
+                只展示指定的一个数字员工。Dock
+                面板只显示该员工，无需召唤选择，适合固定助理角色的垂直场景。
+              </p>
+              <div class="code">
+                <span class="hl-cmt">// 客服助手、法律咨询等</span>
+                <span class="hl-key">AiNoteChat</span>.<span class="hl-fn">init</span>({
+                <span class="hl-attr">appId</span>: <span class="hl-str">'your-app-id'</span>,
+                <span class="hl-attr">apiKey</span>: <span class="hl-str">'sk-...'</span>,
+                <span class="hl-attr">container</span>:
+                <span class="hl-str">'#dock-container'</span>,
+                <span class="hl-attr">employeeId</span>: <span class="hl-str">'emp_cs_001'</span>,
+                <span class="hl-cmt">// 指定单员工</span> <span class="hl-attr">themeColor</span>:
+                <span class="hl-str">'#f59e0b'</span>,
+                <span class="hl-cmt">// 自定义主题色</span> });
+              </div>
+              <button
+                class="btn btn--primary btn--sm"
+                style="margin-top: 14px; background: #f59e0b"
+                onclick="applyScenario('single')"
+              >
+                🚀 快速体验
+              </button>
+            </div>
+          </div>
+
+          <!-- 场景 4：纯 API 模式 -->
+          <div class="card" id="card-api">
+            <div class="card__head">
+              <div class="card__icon card__icon--api">🔌</div>
+              <h3>纯 API 调用</h3>
+              <span class="tag">无 UI</span>
+            </div>
+            <div class="card__body">
+              <p class="card__desc">
+                不使用 Dock
+                UI，纯编程方式调用数字员工能力。适合后端集成、自定义界面、自动化工作流等场景。
+              </p>
+              <div class="code">
+                <span class="hl-cmt">// 完全自定义前端</span> <span class="hl-key">const</span>
+                <span class="hl-attr">api</span> = <span class="hl-fn">AiNoteChat.api</span>({
+                appId, apiKey });
+
+                <span class="hl-key">const</span> <span class="hl-attr">emps</span> =
+                <span class="hl-key">await</span> <span class="hl-attr">api</span>.<span
+                  class="hl-fn"
+                  >getEmployees</span
+                >();
+
+                <span class="hl-key">await</span> <span class="hl-attr">api</span>.<span
+                  class="hl-fn"
+                  >sendMessage</span
+                >({ <span class="hl-attr">content</span>: <span class="hl-str">'你好'</span>,
+                <span class="hl-attr">employeeId</span>: emps[0].id,
+                <span class="hl-attr">onText</span>: (delta) =>
+                <span class="hl-attr">console</span>.<span class="hl-fn">log</span>(delta), });
+              </div>
+              <button
+                class="btn btn--ghost btn--sm"
+                style="margin-top: 14px"
+                onclick="
+                  document.getElementById('api-output').style.display = 'block';
+                  demoApi();
+                "
+              >
+                ▶ 运行示例
+              </button>
+              <pre
+                id="api-output"
+                style="
+                  display: none;
+                  margin-top: 12px;
+                  padding: 12px;
+                  background: #1e1e2e;
+                  color: #a6e3a1;
+                  border-radius: 8px;
+                  font-size: 12px;
+                  max-height: 180px;
+                  overflow-y: auto;
+                "
+              ></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONFIG ========== -->
+    <section class="section" id="config" style="padding-top: 0">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <div class="section__title">在线调试</div>
+            <div class="section__sub" style="margin-top: 4px">
+              填入你的 App ID 和 API Key，实时体验各模式效果
+            </div>
+          </div>
+        </div>
+
+        <div class="config-bar" id="config-bar">
+          <button class="config-bar__toggle" onclick="toggleConfig()">
+            ⚙️ 连接配置
+            <span class="arrow">▾</span>
+          </button>
+          <div class="config-bar__body">
+            <div class="config-grid">
+              <div class="field">
+                <label>App ID *</label>
+                <input id="cfg-appId" type="text" placeholder="输入你的 App ID" />
+              </div>
+              <div class="field">
+                <label>API Key *</label>
+                <input id="cfg-apiKey" type="password" placeholder="sk-xxxxxxxxxxxx" />
+              </div>
+              <div class="field">
+                <label>API 服务器地址</label>
+                <input id="cfg-host" type="text" placeholder="留空 = 同源" />
+              </div>
+              <div class="field">
+                <label>主题色</label>
+                <input id="cfg-color" type="text" placeholder="#6366f1" value="#6366f1" />
+              </div>
+              <div class="field">
+                <label>聊天模式</label>
+                <select id="cfg-chatMode">
+                  <option value="floating">floating — 浮动弹窗</option>
+                  <option value="fullscreen">fullscreen — 全屏遮罩</option>
+                  <option value="panel">panel — 侧栏嵌入</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>侧栏容器选择器（panel 模式必填）</label>
+                <input
+                  id="cfg-chatContainer"
+                  type="text"
+                  placeholder="#chat-sidebar"
+                  value="#chat-sidebar"
+                />
+              </div>
+              <div class="field">
+                <label>员工 ID 过滤（逗号分隔，可选）</label>
+                <input
+                  id="cfg-employeeIds"
+                  type="text"
+                  placeholder="emp_001, emp_002（留空=全部）"
+                />
+              </div>
+              <div class="field">
+                <label>Dock 标识（streamKey，可选）</label>
+                <input
+                  id="cfg-streamKey"
+                  type="text"
+                  placeholder="dock-1（多 dock 场景下区分来源）"
+                />
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" onclick="startChat()">🚀 初始化聊天</button>
+              <button class="btn btn--danger" onclick="stopChat()">停止 & 销毁</button>
+              <button class="btn btn--ghost" onclick="resetConfig()">恢复默认</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PREVIEW ========== -->
+    <section class="section" id="preview" style="padding-top: 0">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <div class="section__title">实时预览</div>
+            <div class="section__sub" style="margin-top: 4px">
+              下方为模拟页面内容区，Dock 按钮固定在页面右侧
+            </div>
+          </div>
+        </div>
+        <div class="preview-area">
+          <div id="chat-sidebar" class="hidden"></div>
+          <div id="preview-hint" class="preview-mock">
+            <div class="preview-hint">
+              <div class="preview-hint__icon">👈</div>
+              <p>Dock 按钮已显示在<em>页面右侧边缘</em></p>
+              <p>点击右侧 <em>"AI 协同"</em> 标签展开员工面板</p>
+              <p>选择员工后，聊天窗口以<em>浮动弹窗</em>方式覆盖页面上方</p>
+              <p style="margin-top: 6px; font-size: 12px; color: var(--c-text-3)">
+                （切换到 panel 模式可在下方看到内嵌聊天面板）
+              </p>
+            </div>
+            <div class="preview-mock__page" style="margin-top: 20px; opacity: 0.5">
+              <h4>📄 示例：产品需求文档</h4>
+              <p>
+                本页面模拟第三方 Web 应用的实际布局效果。SDK 的 Dock
+                按钮和聊天面板不会侵入或影响页面内容。
+              </p>
+              <div class="mock-line"></div>
+              <div class="mock-line" style="width: 88%"></div>
+              <div class="mock-line" style="width: 72%"></div>
+              <div class="mock-line" style="width: 56%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== EVENT LOG（展示 SDK 对话数据流监听） ========== -->
+    <section class="section" id="events" style="padding-top: 0">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <div class="section__title">📡 对话数据流监听</div>
+            <div class="section__sub" style="margin-top: 4px">
+              左侧：<code>stream:event</code> 原始 SSE 数据，包含 <code>employeeId</code>（员工）+ <code>streamKey</code>（对话回合）用于多员工/多对话隔离；
+              右侧：按类型过滤的实时转录
+            </div>
+          </div>
+          <button class="btn btn--ghost btn--sm" onclick="clearEventLog()">清空</button>
+        </div>
+        <div class="event-panel">
+          <div>
+            <div class="event-log__label">📋 原始 stream:event <span class="count" id="ev-count">0</span></div>
+            <div id="event-log" class="event-log">
+              <div class="event-log__empty">等待对话事件…（选择员工并发送消息后开始接收）</div>
+            </div>
+          </div>
+          <div>
+            <div class="event-log__label">📝 业务过滤示例（text-delta → 转录）</div>
+            <div id="transcript-box" class="transcript-box">
+              <div class="transcript-box__empty">等待 AI 回复文本…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <div class="footer">
+      <p>构建命令：<code>cd client &amp;&amp; npm run build:sdk</code></p>
+      <p style="margin-top: 4px">
+        产物位置：<code>dist/sdk/ainote-chat-sdk.js</code> &nbsp;|&nbsp; 演示页：<code
+          >dist/sdk/demo.html</code
+        >
+      </p>
+    </div>
+
+    <!-- ========== DOCK 容器（固定在页面右侧） ========== -->
+    <div id="dock-container"></div>
+
+    <!-- ========== TOAST ========== -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+      // ==================== UI 工具函数（不依赖 SDK，页面加载时立即可用） ====================
+      function toggleConfig() {
+        document.getElementById('config-bar').classList.toggle('open');
+      }
+      function resetConfig() {
+        document.getElementById('cfg-appId').value = '';
+        document.getElementById('cfg-apiKey').value = '';
+        document.getElementById('cfg-host').value = '';
+        document.getElementById('cfg-color').value = '#6366f1';
+        document.getElementById('cfg-chatMode').value = 'floating';
+        document.getElementById('cfg-chatContainer').value = '#chat-sidebar';
+        document.getElementById('cfg-employeeIds').value = '';
+        document.getElementById('cfg-streamKey').value = '';
+      }
+      function setStatus(text, state) {
+        var el = document.getElementById('status-indicator');
+        el.textContent = text;
+        el.className = 'status status--' + (state || 'offline');
+      }
+      function toast(message, type) {
+        var el = document.getElementById('toast');
+        el.textContent = message;
+        el.className = 'toast toast--' + (type || 'success') + ' show';
+        clearTimeout(el._timer);
+        el._timer = setTimeout(function () { el.classList.remove('show'); }, 2500);
+      }
+      function updatePreview(mode) {
+        var sidebarEl = document.getElementById('chat-sidebar');
+        var hintEl = document.getElementById('preview-hint');
+        if (mode === 'panel') {
+          sidebarEl.classList.remove('hidden');
+          if (hintEl) hintEl.style.display = 'none';
+        } else {
+          sidebarEl.classList.add('hidden');
+          if (hintEl) hintEl.style.display = '';
+        }
+      }
+
+      // 动态 import SDK（ES Module），await 确保加载完成后再执行 demo 逻辑
+      // 所有依赖（React/antd/echarts/mermaid）隔离在模块作用域，不与宿主页面冲突
+      (async function () {
+        await import('./ainote-chat-sdk.js');
+
+        // ==================== 事件监听（对话数据流订阅演示） ====================
+
+        var eventLogEl = document.getElementById('event-log');
+        var eventCount = 0;
+        var countEl = document.getElementById('ev-count');
+        var transcriptEl = document.getElementById('transcript-box');
+        var transcriptLines = [];
+        var currentAiLine = '';
+
+        function appendEvent(type, data, streamKey, employeeId) {
+          eventCount++;
+          countEl.textContent = eventCount;
+          if (eventCount === 1) eventLogEl.innerHTML = '';
+
+          var now = new Date();
+          var time = now.toLocaleTimeString();
+          var dataStr = typeof data === 'object' ? JSON.stringify(data).slice(0, 140) : String(data).slice(0, 140);
+          // 显示员工ID + 逻辑ID归属（后8位），用于直观验证多员工/多对话隔离
+          var empBadge = employeeId ? '<span style="color:#89b4fa;font-size:10px;margin-right:4px">[' + (employeeId.slice(0,8) || employeeId) + ']</span>' : '<span style="color:#6c7086;font-size:10px;margin-right:4px">[?]</span>';
+          var keyBadge = streamKey ? '<span style="color:#cba6f7;font-size:10px">[' + streamKey.slice(-8) + ']</span>' : '<span style="color:#6c7086;font-size:10px">[-]</span>';
+
+          var item = document.createElement('div');
+          item.className = 'event-log__item';
+          item.innerHTML =
+            '<span class="event-log__time">' + time + '</span>' +
+            empBadge +
+            keyBadge +
+            '<span class="event-log__type">' + type + '</span>' +
+            '<span class="event-log__data">' + dataStr + '</span>';
+          eventLogEl.appendChild(item);
+          eventLogEl.scrollTop = eventLogEl.scrollHeight;
+        }
+
+        function clearEventLog() {
+          eventLogEl.innerHTML = '<div class="event-log__empty">等待对话事件…（选择员工并发送消息后开始接收）</div>';
+          transcriptLines = [];
+          currentAiLine = '';
+          transcriptEl.innerHTML = '<div class="transcript-box__empty">等待 AI 回复文本…</div>';
+          eventCount = 0;
+          countEl.textContent = '0';
+        }
+
+        // 核心：订阅对话数据流 stream:event
+        // streamKey 是外部传入的 dock 标识（区分不同 dock），employeeId 区分 dock 内不同员工
+        // conversationId 是后端返回的真实会话 ID（首轮可能为 null）
+        // 多 dock / 多员工场景：用 streamKey + employeeId 双重过滤
+        AiNoteChat.events.on('stream:event', function (payload) {
+          // === 原始事件记录（左侧面板）===
+          appendEvent(payload.type, payload.data, payload.streamKey, payload.employeeId);
+
+          // === 业务过滤示例（右侧面板）===
+
+          // === 业务过滤示例（右侧面板）===
+
+          // 示例1：实时转录 AI 回复文本
+          if (payload.type === 'text-delta') {
+            var text = (payload.data && payload.data.textDelta) || '';
+            currentAiLine += text;
+            renderTranscript();
+          }
+
+          // 示例2：监听工作流节点进度
+          if (payload.type === 'stage' || payload.type === 'node:progress') {
+            var nodeText = (payload.data && payload.data.content) || '';
+            transcriptLines.push({ type: 'node', text: nodeText });
+            renderTranscript();
+          }
+
+          // 示例3：工具调用结果
+          if (payload.type === 'tool-result' || payload.type === 'tool-output-available') {
+            var output = (payload.data && (payload.data.output || payload.data.result)) || '';
+            transcriptLines.push({ type: 'node', text: '工具输出: ' + (typeof output === 'string' ? output.slice(0, 80) : '[复杂数据]') });
+            renderTranscript();
+          }
+
+          // 示例4：流结束，归档当前 AI 行
+          if (payload.type === 'finish') {
+            if (currentAiLine) {
+              transcriptLines.push({ type: 'ai', text: currentAiLine });
+              currentAiLine = '';
+            }
+            renderTranscript();
+          }
+
+          // ★ 示例5：未来自定义节点（业务联动）
+          // if (payload.type === 'custom:export-data') {
+          //   var exportData = payload.data;
+          //   downloadFile(exportData.fileName, exportData.content);
+          // }
+          // if (payload.type === 'custom:create-task') {
+          //   myTaskSystem.create(payload.data);
+          // }
+        });
+
+        // 同时订阅生命周期事件（通配符，用于状态指示）
+        AiNoteChat.events.on('chat:send', function (data) {
+          // 用户发送消息时，开启新的 AI 回复行
+          if (currentAiLine) {
+            transcriptLines.push({ type: 'ai', text: currentAiLine });
+          }
+          currentAiLine = '';
+          var content = (data && data.content) || '';
+          transcriptLines.push({ type: 'user', text: content });
+          renderTranscript();
+        });
+
+        function renderTranscript() {
+          var html = '';
+          transcriptLines.forEach(function (line) {
+            if (line.type === 'user') {
+              html += '<div class="ts-user">👤 ' + escapeHtml(line.text) + '</div>';
+            } else if (line.type === 'ai') {
+              html += '<div class="ts-ai">🤖 ' + escapeHtml(line.text.slice(0, 500)) + (line.text.length > 500 ? '...' : '') + '</div>';
+            } else if (line.type === 'node') {
+              html += '<div class="ts-node">' + escapeHtml(line.text) + '</div>';
+            }
+          });
+          if (currentAiLine) {
+            html += '<div class="ts-ai">🤖 ' + escapeHtml(currentAiLine.slice(0, 500)) + (currentAiLine.length > 500 ? '...' : '') + ' <em style="color:var(--c-text-3)">▌</em></div>';
+          }
+          transcriptEl.innerHTML = html || '<div class="transcript-box__empty">等待 AI 回复文本…</div>';
+          transcriptEl.scrollTop = transcriptEl.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+          var div = document.createElement('div');
+          div.textContent = str;
+          return div.innerHTML;
+        }
+
+        // ==================== 快捷场景 ====================
+
+        // 场景预设配置
+        var SCENARIO_PRESETS = {
+          floating: {
+            chatMode: 'floating',
+            chatContainer: undefined,
+            employeeIds: undefined,
+            color: '#6366f1',
+            desc: '浮动弹窗模式 — 聊天窗口浮在页面上方',
+          },
+          panel: {
+            chatMode: 'panel',
+            chatContainer: '#chat-sidebar',
+            employeeIds: undefined,
+            color: '#22c55e',
+            desc: '侧栏嵌入模式 — 聊天面板嵌入侧栏区域',
+          },
+          single: {
+            chatMode: 'floating',
+            chatContainer: undefined,
+            employeeIds: undefined, // 不传则用 API 返回的第一个
+            color: '#f59e0b',
+            desc: '单员工模式 — 只显示指定 ID 的员工',
+          },
+        };
+
+        function applyScenario(key) {
+          destroyChat();
+
+          var preset = SCENARIO_PRESETS[key];
+          if (!preset) return;
+
+          // 同步到配置面板
+          document.getElementById('cfg-chatMode').value = preset.chatMode;
+          document.getElementById('cfg-chatContainer').value =
+            preset.chatContainer || '#chat-sidebar';
+          document.getElementById('cfg-employeeIds').value = preset.employeeIds || '';
+          document.getElementById('cfg-color').value = preset.color;
+
+          updatePreview(preset.chatMode);
+
+          // 打开配置面板以便用户看到当前配置
+          document.getElementById('config-bar').classList.add('open');
+
+          // 读取凭据
+          var appId = document.getElementById('cfg-appId').value.trim();
+          var apiKey = document.getElementById('cfg-apiKey').value.trim();
+          var host = document.getElementById('cfg-host').value.trim();
+          var streamKey = document.getElementById('cfg-streamKey').value.trim();
+
+          if (!appId || !apiKey) {
+            toast('请先在在线调试区域填入 App ID 和 API Key', 'error');
+            return;
+          }
+
+          var config = {
+            appId: appId,
+            apiKey: apiKey,
+            container: '#dock-container',
+            host: host || undefined,
+            themeColor: preset.color,
+            chatMode: preset.chatMode,
+            chatContainer: preset.chatContainer,
+            dockPlacement: 'right',
+            streamKey: streamKey || undefined,
+          };
+
+          // 单员工模式：尝试获取员工列表，取第一个
+          if (key === 'single') {
+            (async function () {
+              try {
+                var api = AiNoteChat.api({
+                  appId: appId,
+                  apiKey: apiKey,
+                  host: host || undefined,
+                });
+                var emps = await api.getEmployees();
+                if (emps.length > 0) {
+                  config.employeeId = emps[0].id;
+                  config.employeeIds = [emps[0].id];
+                }
+              } catch (e) {
+                console.warn('获取员工列表失败，继续初始化', e);
+              }
+              AiNoteChat.init(config);
+            })();
+          } else {
+            AiNoteChat.init(config);
+          }
+
+          setStatus('已连接 (' + key + ')', 'online');
+          toast(preset.desc, 'success');
+        }
+
+        // ==================== 启动 / 停止 ====================
+
+        function startChat() {
+          var appId = document.getElementById('cfg-appId').value.trim();
+          var apiKey = document.getElementById('cfg-apiKey').value.trim();
+          var host = document.getElementById('cfg-host').value.trim();
+          var color = document.getElementById('cfg-color').value.trim();
+          var chatMode = document.getElementById('cfg-chatMode').value.trim();
+          var chatContainer = document.getElementById('cfg-chatContainer').value.trim();
+          var employeeIdsRaw = document.getElementById('cfg-employeeIds').value.trim();
+          var streamKey = document.getElementById('cfg-streamKey').value.trim();
+
+          if (!appId || !apiKey) {
+            toast('请填写 App ID 和 API Key', 'error');
+            return;
+          }
+
+          if (chatMode === 'panel' && !chatContainer) {
+            toast('panel 模式需要填写侧栏容器选择器', 'error');
+            return;
+          }
+
+          // 先销毁旧实例
+          destroyChat();
+
+          updatePreview(chatMode);
+
+          var employeeIds = employeeIdsRaw
+            ? employeeIdsRaw
+                .split(',')
+                .map(function (s) {
+                  return s.trim();
+                })
+                .filter(Boolean)
+            : undefined;
+
+          // stream:event 回调自带 streamKey（dock 标识）+ employeeId，无需额外传参
+          AiNoteChat.init({
+            appId: appId,
+            apiKey: apiKey,
+            host: host || undefined,
+            container: '#dock-container',
+            themeColor: color || '#6366f1',
+            chatMode: chatMode || 'floating',
+            chatContainer: chatContainer || undefined,
+            dockPlacement: 'right',
+            employeeIds: employeeIds,
+            streamKey: streamKey || undefined,
+          });
+
+          setStatus('已连接 (' + chatMode + ')', 'online');
+          toast('数字员工已就绪 ✨', 'success');
+        }
+
+        function stopChat() {
+          destroyChat();
+          updatePreview('floating');
+          toast('已销毁连接', 'success');
+        }
+
+        function destroyChat() {
+          if (typeof AiNoteChat !== 'undefined' && AiNoteChat.destroy) {
+            AiNoteChat.destroy();
+          }
+          setStatus('未连接', 'offline');
+
+          // 恢复预览区
+          var sidebarEl = document.getElementById('chat-sidebar');
+          var hintEl = document.getElementById('preview-hint');
+          sidebarEl.classList.add('hidden');
+          if (hintEl) hintEl.style.display = '';
+        }
+
+        // ==================== API 演示 ====================
+
+        async function demoApi() {
+          var output = document.getElementById('api-output');
+          output.style.display = 'block';
+          output.textContent = '⏳ 正在获取员工列表...\n';
+
+          var appId = document.getElementById('cfg-appId').value.trim();
+          var apiKey = document.getElementById('cfg-apiKey').value.trim();
+          var host = document.getElementById('cfg-host').value.trim();
+
+          if (!appId || !apiKey) {
+            output.textContent = '❌ 请先在配置区域填入 App ID 和 API Key';
+            return;
+          }
+
+          try {
+            var api = AiNoteChat.api({ appId: appId, apiKey: apiKey, host: host || undefined });
+            var emps = await api.getEmployees();
+            output.textContent = '✅ 获取到 ' + emps.length + ' 位数字员工：\n\n';
+            emps.forEach(function (e, i) {
+              output.textContent += '  [' + (i + 1) + '] ' + e.name + '\n';
+              output.textContent += '      ID: ' + (e.id || e._id) + '\n';
+              output.textContent += '      角色: ' + (e.roleTitle || '-') + '\n';
+              output.textContent += '      场景: ' + (e.scenario || 'GENERAL') + '\n\n';
+            });
+            toast('API 调用成功，获取到 ' + emps.length + ' 位员工', 'success');
+          } catch (err) {
+            output.textContent = '❌ 错误: ' + err.message;
+            toast('API 调用失败: ' + err.message, 'error');
+          }
+        }
+
+        // ==================== 页面加载 ====================
+
+        // 默认展开配置面板
+        document.getElementById('config-bar').classList.add('open');
+
+        // 暴露 onclick 引用的函数到全局作用域
+        window.toggleConfig = toggleConfig;
+        window.resetConfig = resetConfig;
+        window.applyScenario = applyScenario;
+        window.startChat = startChat;
+        window.stopChat = stopChat;
+        window.demoApi = demoApi;
+        window.clearEventLog = clearEventLog;
+      })();
+    </script>
+  </body>
+</html>

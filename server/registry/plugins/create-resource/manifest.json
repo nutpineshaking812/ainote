@@ -1,0 +1,54 @@
+{
+  "id": "createResource",
+  "name": "创建资源",
+  "type": "action",
+  "category": "resource",
+  "icon": "FileAddOutlined",
+  "iconColor": "#52c41a",
+  "description": "在应用中创建文档或资源",
+  "properties": [
+    {
+      "name": "title",
+      "label": "资源名称",
+      "type": "string",
+      "required": true,
+      "default": "未命名文档"
+    },
+    {
+      "name": "content",
+      "label": "内容",
+      "type": "variableInput",
+      "required": false
+    },
+    {
+      "name": "parentId",
+      "label": "父文件夹",
+      "type": "folder",
+      "required": false
+    },
+    {
+      "name": "collisionStrategy",
+      "label": "冲突策略",
+      "type": "collisionStrategy",
+      "required": false,
+      "default": "overwrite"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否成功",
+      "type": "boolean"
+    },
+    {
+      "name": "docId",
+      "label": "文档ID",
+      "type": "string"
+    },
+    {
+      "name": "action",
+      "label": "执行动作",
+      "type": "string"
+    }
+  ]
+}

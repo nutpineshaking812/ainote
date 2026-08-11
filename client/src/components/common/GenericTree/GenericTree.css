@@ -1,0 +1,186 @@
+/* GenericTree.css */
+
+.generic-tree-container {
+  width: 100%;
+  /* Theme tokens defined as CSS variables */
+  --gt-primary-color: var(--gt-token-primary, #37352f);
+  --gt-text-color: var(--gt-token-text, #37352f);
+  --gt-text-secondary: var(--gt-token-text-secondary, #787774);
+  --gt-text-description: var(--gt-token-text-description, rgba(55, 53, 47, 0.45));
+  --gt-bg-hover: var(--gt-token-bg-hover, rgba(55, 53, 47, 0.08));
+  --gt-bg-selected: var(--gt-token-bg-selected, rgba(55, 53, 47, 0.12));
+}
+
+/* Hide default Ant Design switcher & background */
+.generic-tree .ant-tree-switcher {
+  display: none !important;
+}
+
+.generic-tree {
+  background: transparent !important;
+}
+
+/* Full-width hover and selection on the treenode */
+.generic-tree .ant-tree-treenode {
+  width: 100%;
+  padding: 0 !important;
+  transition: background-color 0.2s;
+  align-items: center;
+}
+
+.generic-tree .ant-tree-treenode:hover {
+  background-color: var(--gt-bg-hover);
+}
+
+.generic-tree .ant-tree-treenode-selected {
+  background-color: var(--gt-bg-selected) !important;
+}
+
+/* Adjust the content wrapper to take full width and remove default hover */
+.generic-tree .ant-tree-node-content-wrapper {
+  flex: 1;
+  width: 0;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.generic-tree .ant-tree-node-content-wrapper:hover {
+  background: transparent !important;
+}
+
+.gt-node-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 28px;
+  padding: 1px 8px 1px 12px;
+  gap: 6px;
+}
+
+.gt-node-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Icon & Switcher Wrapper Logic */
+.gt-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Default state: show folder/file icon */
+.gt-node-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #37352f;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.gt-switcher {
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: var(--gt-text-secondary);
+  transition: transform 0.2s;
+}
+
+/* Only show switcher on hover */
+.gt-node-row:hover .gt-icon-wrapper .gt-switcher {
+  display: flex;
+}
+
+/* Hide default icon ONLY on hover */
+.gt-node-row:hover .gt-icon-wrapper .gt-switcher + .default-icon {
+  display: none;
+}
+
+.gt-switcher.expanded {
+  transform: rotate(90deg);
+}
+
+.gt-switcher:hover {
+  background-color: rgba(55, 53, 47, 0.1);
+  border-radius: 3px;
+}
+
+.gt-node-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.gt-node-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--gt-text-color);
+}
+
+.gt-node-actions {
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  /* padding-left: 4px; */
+  /* display: none; */
+  width: 0;
+  overflow: hidden;
+}
+
+.gt-node-row:hover .gt-node-actions {
+  opacity: 1;
+  /* display: flex; */
+  width: auto;
+  overflow: visible;
+}
+
+.gt-action-btn {
+  padding: 2px 4px !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  color: var(--gt-text-secondary);
+}
+
+.gt-action-btn:hover {
+  color: var(--gt-primary-color);
+}
+
+/* Selection state text color */
+.ant-tree-treenode-selected .gt-node-title {
+  color: var(--gt-text-color);
+  font-weight: 600;
+}
+
+/* Draggable visual feedback improvements */
+.generic-tree .ant-tree-drop-indicator {
+  background-color: var(--gt-primary-color);
+}
+
+/* Make the dragging ghost/node more transparent */
+.ant-tree-treenode.dragging {
+  opacity: 0.4 !important;
+}
+
+/* Specifically target the ghost node created during drag */
+.ant-tree-drag-source {
+  opacity: 0.3 !important;
+}

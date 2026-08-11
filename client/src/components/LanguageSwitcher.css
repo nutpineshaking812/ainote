@@ -1,0 +1,75 @@
+.language-switcher-trigger {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 12px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(8px);
+  color: #475569 !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.language-switcher-trigger:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: #00b96b !important;
+  color: #00b96b !important;
+  box-shadow: 0 4px 12px rgba(0, 185, 107, 0.12);
+  transform: translateY(-1px);
+}
+
+.language-switcher-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.lang-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 110px;
+  padding: 4px 0;
+}
+
+.lang-label {
+  font-size: 14px;
+}
+
+.lang-active-check {
+  color: #00b96b;
+  font-size: 12px;
+}
+
+/* Custom styles for Ant Design Dropdown menu items */
+.ant-dropdown-menu {
+  padding: 8px !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.ant-dropdown-menu-item {
+  border-radius: 8px !important;
+  margin-bottom: 2px !important;
+  transition: background 0.2s ease !important;
+}
+
+.ant-dropdown-menu-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.ant-dropdown-menu-item-active {
+  background-color: rgba(0, 185, 107, 0.06) !important;
+}
+
+.user-avatar-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 185, 107, 0.25) !important;
+}

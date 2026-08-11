@@ -1,0 +1,133 @@
+{
+  "name": "DEFAULT_DATA_ANALYSIS",
+  "workflowKey": "DEFAULT_DATA_ANALYSIS",
+  "description": "系统默认数据分析流程，支持通过对话生成图表和分析报告。",
+  "scope": "SYSTEM",
+  "triggerType": "CAPABILITY",
+  "status": "ACTIVE",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "capability",
+      "data": { 
+        "label": "开始",
+        "inputs": [
+          { "name": "message", "type": "string", "required": true },
+          { "name": "conversationId", "type": "string", "isSystem": true },
+          { "name": "appId", "type": "string", "isSystem": true }
+        ]
+      },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "ensure",
+      "type": "ensureConvo",
+      "data": {
+        "label": "确定会话",
+        "conversationId": "{{trigger.conversationId}}",
+        "type": "VIEW_DESIGN"
+      },
+      "position": { "x": 200, "y": 0 }
+    },
+    {
+      "id": "userMsg",
+      "type": "addMessage",
+      "data": {
+        "label": "记录输入",
+        "conversationId": "{{nodes.ensure.output.conversationId}}",
+        "role": "user",
+        "content": "{{trigger.message}}"
+      },
+      "position": { "x": 400, "y": 0 }
+    },
+    {
+      "id": "prepare",
+      "type": "addMessage",
+      "data": {
+        "label": "准备回复",
+        "conversationId": "{{nodes.ensure.output.conversationId}}",
+        "role": "assistant",
+        "openBubble": true
+      },
+      "position": { "x": 600, "y": 0 }
+    },
+    {
+      "id": "memory",
+      "type": "fetchMemory",
+      "data": {
+        "label": "获取记忆",
+        "conversationId": "{{nodes.ensure.output.conversationId}}"
+      },
+      "position": { "x": 900, "y": 150 }
+    },
+    {
+      "id": "planner",
+      "type": "aiAgent",
+      "data": {
+        "label": "分析规划",
+        "prompt": "# 角色\n\n你是一个友好的、专业的数据分析助手。\n\n# 任务对象 (StateObject) 结构\n```\n{\n  \"task\": {\n    \"intent\": null,\n    \"data_source\": null,\n    \"title\": null,\n    \"form_id\": null,\n    \"joins\": [],\n    \"dimensions\": [],\n    \"metrics\": [],\n    \"filters\": [],\n    \"output_format\": null,\n    \"dynamic_metadata\": {},\n    \"status\": \"incomplete\"\n  }\n}\n```\n# 输出格式 (Strict)\n\n<think>\n思考过程...\n</think>\n<message>\n用自然语言与用户沟通，确认需求或解释分析结果。\n</message>\n<intent>\n提供完整的最新 StateObject JSON 对象。\n</intent>",
+        "userPrompt": "{{nodes.memory.output}}"
+      },
+      "position": { "x": 1000, "y": 0 }
+    },
+    {
+      "id": "router",
+      "type": "if",
+      "data": {
+        "label": "是否执行查询",
+        "condition": "{{nodes.planner.output.intent.task.status}} === 'complete'"
+      },
+      "position": { "x": 1200, "y": 0 }
+    },
+    {
+      "id": "build",
+      "type": "buildAnalysisQuery",
+      "data": {
+        "label": "构建查询",
+        "task": "{{nodes.planner.output.intent.task}}"
+      },
+      "position": { "x": 1400, "y": -100 }
+    },
+    {
+      "id": "query",
+      "type": "mongoAggregate",
+      "data": {
+        "label": "执行查询",
+        "pipeline": "{{nodes.build.output.pipeline}}"
+      },
+      "position": { "x": 1600, "y": -100 }
+    },
+    {
+      "id": "skills",
+      "type": "skillNode",
+      "data": {
+        "label": "内置技能",
+        "skillIds": [
+          "system:get_available_forms",
+          "system:get_schema_by_name",
+          "system:get_schema_by_id"
+        ]
+      },
+      "position": { "x": 1100, "y": 150 }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "data": { "label": "结束", "outputs": [] },
+      "position": { "x": 2100, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "target": "ensure" },
+    { "id": "e2", "source": "ensure", "target": "userMsg" },
+    { "id": "e3", "source": "userMsg", "target": "prepare" },
+    { "id": "e4", "source": "prepare", "target": "planner" },
+    { "id": "e5", "source": "memory", "target": "planner", "targetHandle": "memory-slot" },
+    { "id": "eskills", "source": "skills", "target": "planner", "targetHandle": "tool-slot" },
+    { "id": "e6", "source": "planner", "target": "router" },
+    { "id": "e7", "source": "router", "target": "build", "sourceHandle": "true" },
+    { "id": "e8", "source": "build", "target": "query" },
+    { "id": "e9", "source": "query", "target": "end" },
+    { "id": "e10", "source": "router", "target": "end", "sourceHandle": "false" }
+  ]
+}

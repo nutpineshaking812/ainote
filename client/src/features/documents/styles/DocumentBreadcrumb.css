@@ -1,0 +1,27 @@
+.doc-breadcrumb {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.doc-bc-seg {
+  color: #555;
+}
+.doc-bc-seg.clickable {
+  cursor: pointer;
+  color: #1677ff;
+}
+.doc-bc-seg.clickable:hover {
+  text-decoration: underline;
+}
+.doc-bc-sep {
+  color: #999;
+  margin: 0 2px;
+}
+.doc-bc-current {
+  font-weight: 600;
+  color: #222;
+  max-width: 320px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

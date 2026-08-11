@@ -1,0 +1,51 @@
+{
+  "name": "MEM0_RECALL_V2",
+  "workflowKey": "MEM0_RECALL_V2",
+  "description": "基于 Mem0 的知识召回流程：替代传统的向量搜索节点逻辑。",
+  "scope": "SYSTEM",
+  "triggerType": "CAPABILITY",
+  "category": "AI_MEMORY_RECALL",
+  "status": "ACTIVE",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "capability",
+      "data": {
+        "label": "记忆召回入口",
+        "inputs": [
+          { "name": "query", "type": "string", "required": true },
+          { "name": "userId", "type": "string", "isSystem": true },
+          { "name": "limit", "type": "number", "default": 5 }
+        ]
+      },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "mem_recall",
+      "type": "plugin-action",
+      "data": {
+        "label": "Mem0 知识搜索",
+        "pluginId": "mem0-recall",
+        "pluginParams": {
+          "userId": "{{trigger.sessionId}}",
+          "query": "{{trigger.query}}",
+          "limit": "{{trigger.limit}}"
+        }
+      },
+      "position": { "x": 300, "y": 0 }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "data": {
+        "label": "召回完成",
+        "outputs": [{ "name": "memoryText", "value": "{{mem_recall.result.text}}" }]
+      },
+      "position": { "x": 600, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "target": "mem_recall" },
+    { "id": "e2", "source": "mem_recall", "target": "end" }
+  ]
+}

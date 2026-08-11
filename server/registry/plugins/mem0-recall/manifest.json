@@ -1,0 +1,50 @@
+{
+  "id": "mem0-recall",
+  "name": "Mem0 长期召回 (Recall)",
+  "type": "action",
+  "category": "Memory",
+  "icon": "SearchOutlined",
+  "iconColor": "#1890ff",
+  "description": "基于语义搜索从用户的长期记忆库中召回最相关的事实片段。",
+  "properties": [
+    {
+      "name": "query",
+      "label": "查询内容",
+      "type": "textarea",
+      "placeholder": "例如：用户喜欢什么样的风格？",
+      "description": "进行语义搜索的问题或文本段落。",
+      "required": true
+    },
+    {
+      "name": "userId",
+      "label": "用户标识 (UserId)",
+      "type": "string",
+      "default": "{{convo.userId}}",
+      "placeholder": "默认使用当前会话用户",
+      "description": "Mem0 中隔离记忆的关键 ID。"
+    },
+    {
+      "name": "limit",
+      "label": "召回条数",
+      "type": "number",
+      "default": 5
+    }
+  ],
+  "outputs": [
+    {
+      "name": "results",
+      "label": "原始记录",
+      "type": "array"
+    },
+    {
+      "name": "text",
+      "label": "合并文本",
+      "type": "string"
+    },
+    {
+      "name": "count",
+      "label": "记录总数",
+      "type": "number"
+    }
+  ]
+}

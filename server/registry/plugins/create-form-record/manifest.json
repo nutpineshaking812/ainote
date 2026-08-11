@@ -1,0 +1,48 @@
+{
+  "id": "createFormRecord",
+  "name": "写入表单",
+  "type": "action",
+  "category": "resource",
+  "icon": "DatabaseOutlined",
+  "iconColor": "#1890ff",
+  "description": "向当前应用的指定表单中写入单条或批量数据记录",
+  "properties": [
+    {
+      "name": "formId",
+      "label": "选择目标表单",
+      "type": "formSelector",
+      "required": true
+    },
+    {
+      "name": "formData",
+      "label": "表单数据 (JSON / 数组)",
+      "type": "systemPrompt",
+      "required": true,
+      "description": "需要写入的数据。可以是单个键值对对象，也可以是包含多个对象的数组以进行批量录入。"
+    },
+    {
+      "name": "upsert",
+      "label": "若存在唯一性冲突则更新已存在的记录",
+      "type": "boolean",
+      "required": false,
+      "description": "若表单中包含唯一性校验字段（如手机号、工号等），勾选此项将在检测到冲突时更新已存在的记录，否则会抛出错误并中断工作流"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否成功",
+      "type": "boolean"
+    },
+    {
+      "name": "recordIds",
+      "label": "记录 ID 列表",
+      "type": "array"
+    },
+    {
+      "name": "count",
+      "label": "成功写入条数",
+      "type": "number"
+    }
+  ]
+}

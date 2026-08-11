@@ -1,0 +1,45 @@
+{
+  "id": "mem0-distill",
+  "name": "Mem0 自动蒸馏 (Store)",
+  "type": "action",
+  "category": "Memory",
+  "icon": "DatabaseOutlined",
+  "iconColor": "#722ed1",
+  "description": "智能提取输入内容中的事实并存入 Mem0，自动处理重复和合并记录。",
+  "properties": [
+    {
+      "name": "content",
+      "label": "待记述内容",
+      "type": "textarea",
+      "placeholder": "将需要学习的消息或者段落传入",
+      "description": "Mem0 将从中自动提取知识点。",
+      "required": true
+    },
+    {
+      "name": "userId",
+      "label": "用户标识 (UserId)",
+      "type": "string",
+      "default": "{{convo.userId}}",
+      "placeholder": "默认使用当前会话用户",
+      "description": "Mem0 中隔离记忆的关键 ID。"
+    },
+    {
+      "name": "metadata",
+      "label": "元数据 (JSON)",
+      "type": "textarea",
+      "placeholder": "{\"source\": \"workflow\", \"category\": \"user_pref\"}"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否成功",
+      "type": "boolean"
+    },
+    {
+      "name": "extractedItems",
+      "label": "提取信息",
+      "type": "array"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "digital-employee",
+  "name": "数字员工",
+  "type": "action",
+  "category": "utility",
+  "icon": "RobotOutlined",
+  "iconColor": "#13c2c2",
+  "description": "调用指定的数字员工对话接口，发送消息并获取执行结果，支持同步或异步执行模式。",
+  "properties": [
+    {
+      "name": "employeeId",
+      "label": "选择数字员工",
+      "type": "digitalEmployeeSelector",
+      "required": true,
+      "placeholder": "请选择要运行的数字员工"
+    },
+    {
+      "name": "message",
+      "label": "发送消息 (Message)",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "请输入发送给数字员工的消息，例如：你好，请帮我分析...。支持使用 {{ }} 绑定上下文变量"
+    },
+    {
+      "name": "async",
+      "label": "异步执行",
+      "type": "boolean",
+      "default": false,
+      "description": "开启后，启动数字员工的大脑工作流后立即返回，不会同步等待其最终生成回复。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否调用成功",
+      "type": "boolean"
+    },
+    {
+      "name": "result",
+      "label": "数字员工回复结果",
+      "type": "string"
+    },
+    {
+      "name": "executionId",
+      "label": "运行实例 ID",
+      "type": "string"
+    }
+  ],
+  "slots": [
+    {
+      "id": "collaborator-slot",
+      "label": "协同员工",
+      "position": "bottom",
+      "left": "50%",
+      "color": "#13c2c2",
+      "background": "#e6fffb",
+      "border": "1px solid #87e8de",
+      "className": "collaborator-edge"
+    }
+  ]
+}

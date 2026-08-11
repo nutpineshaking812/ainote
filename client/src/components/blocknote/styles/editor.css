@@ -1,0 +1,789 @@
+BlockNote Editor 自定义样式
+
+/* ========================================
+   基础容器和布局
+   ======================================== */
+
+.blocknote-editor-wrapper {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+.blocknote-editor-wrapper .bn-container {
+  font-family: inherit;
+}
+
+.blocknote-editor-wrapper .bn-editor {
+  padding: 0px 20px;
+  min-height: 200px;
+}
+
+/* ========================================
+   Title Area（独立标题组件，不依赖 BlockNote）
+   ======================================== */
+
+.blocknote-title-area {
+  padding: 8px 0px;
+  padding-left: 20px;
+}
+
+.editor-title-wrapper {
+  width: 100%;
+}
+
+.editor-title-input.ant-input {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a1a1a;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  caret-color: #1a1a1a;
+  font-family: inherit;
+  letter-spacing: -0.5px;
+}
+
+.editor-title-input.ant-input::placeholder {
+  color: #c0c0c0;
+  font-weight: 700;
+}
+
+.editor-title-input.ant-input:read-only {
+  cursor: default;
+}
+
+.editor-title-download {
+  margin-top: 6px;
+}
+
+/* titleSlot: contains tags, updatedAt, etc. */
+.blocknote-title-slot {
+  margin-top: 12px;
+  /* margin-bottom: 8px; */
+  position: relative;
+}
+
+.blocknote-title-slot-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  height: 20px;
+}
+
+/* The horizontal line */
+.blocknote-title-slot-toggle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background-color: #f0f0f0;
+  z-index: 1;
+}
+
+.blocknote-title-slot-toggle .toggle-icon,
+.blocknote-title-slot-toggle .toggle-text {
+  position: relative;
+  z-index: 2;
+  background-color: #fff; /* Match parent background to hide the line behind text */
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.blocknote-title-slot-toggle .toggle-icon {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 4px;
+}
+
+.blocknote-title-slot-toggle .toggle-text {
+  padding-right: 8px;
+  opacity: 0;
+  transform: translateX(-5px);
+  visibility: hidden;
+}
+
+.blocknote-title-slot-toggle:hover .toggle-text {
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.blocknote-title-slot-toggle:hover .toggle-icon,
+.blocknote-title-slot-toggle:hover .toggle-text {
+  color: #1890ff;
+}
+
+/* Adjust for collapsed state if needed */
+.blocknote-title-slot.is-collapsed {
+  margin-top: 4px;
+}
+
+/* ========================================
+   Title Block (legacy, kept for compatibility)
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-title-block[data-empty='true']::before {
+  content: attr(data-placeholder) !important;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.blocknote-editor-wrapper .bn-title-block {
+  position: relative;
+  color: #2c2c2b;
+  font-size: 46px;
+  line-height: 1.2;
+  pointer-events: none;
+  transform-origin: left top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+.blocknote-editor-wrapper .bn-title-block[data-empty='true']::before {
+  color: #bfbfbf;
+  content: attr(data-placeholder);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.blocknote-editor-wrapper .bn-original-file {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.blocknote-editor-wrapper .bn-original-file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #0a65cc;
+  background: rgba(10, 101, 204, 0.08);
+  border: 1px solid rgba(10, 101, 204, 0.18);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.blocknote-editor-wrapper .bn-original-file-btn:hover {
+  color: #094b93;
+  background: rgba(9, 75, 147, 0.12);
+  border-color: rgba(9, 75, 147, 0.24);
+}
+
+.blocknote-editor-wrapper .bn-original-file-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.blocknote-editor-wrapper .bn-original-file-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.blocknote-editor-wrapper .bn-original-file-label {
+  line-height: 1;
+}
+
+/* ========================================
+   子文档块
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-child-doc-block {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  cursor: pointer;
+  border-color: transparent;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  user-select: none;
+  text-decoration: underline;
+  width: 100%;
+  outline: none !important;
+}
+
+.blocknote-editor-wrapper .bn-child-doc-block:hover {
+  background-color: #f7f7f5;
+  border-color: transparent;
+}
+
+.blocknote-editor-wrapper .bn-child-doc-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  color: #8c8c8c;
+}
+
+.blocknote-editor-wrapper .bn-child-doc-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.blocknote-editor-wrapper .bn-child-doc-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #37352f;
+  text-decoration: none;
+}
+
+/* 聚焦时占位符颜色变浅 */
+.blocknote-editor-wrapper .bn-inline-content[data-empty='true']:focus-within::before,
+.blocknote-editor-wrapper .bn-inline-content[data-empty='true']:focus::before {
+  color: #d9d9d9;
+}
+
+/* 确保可编辑区域显示光标与 IME 正常工作 */
+.blocknote-editor-wrapper .bn-inline-content[contenteditable='true'] {
+  caret-color: auto;
+  -webkit-user-modify: read-write-plaintext-only;
+}
+
+/* ========================================
+   块容器和内容
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-outer {
+  margin: 2px 0;
+}
+
+.blocknote-editor-wrapper .bn-block-content {
+  line-height: 1.6;
+  font-size: 15px;
+  padding: 0;
+}
+
+.blocknote-editor-wrapper .bn-block-content[data-content-type='paragraph'] {
+  margin: 4px 0;
+}
+
+/* ========================================
+   标题样式（H1-H3）
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h1 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 16px 0 10px;
+}
+
+.blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 14px 0 8px;
+}
+
+.blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 12px 0 6px;
+}
+
+/* ========================================
+   列表样式
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content[data-content-type='bulletListItem'],
+.blocknote-editor-wrapper .bn-block-content[data-content-type='numberedListItem'] {
+  margin: 2px 0;
+}
+
+.blocknote-editor-wrapper .bn-block-content ul,
+.blocknote-editor-wrapper .bn-block-content ol {
+  padding-left: 28px;
+}
+
+.blocknote-editor-wrapper .bn-block-content li {
+  margin: 3px 0;
+  line-height: 1.6;
+}
+
+/* ========================================
+   引用块
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content blockquote {
+  border-left: 4px solid #1890ff;
+  padding: 10px 14px;
+  margin: 12px 0;
+  background: #f0f5ff;
+  border-radius: 4px;
+  font-style: italic;
+  color: #595959;
+}
+
+/* ========================================
+   代码块
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content[data-content-type='codeBlock'] {
+  background: transparent !important;
+  border-radius: 6px;
+  /* padding: 12px; */
+  /* margin: 10px 0; */
+  overflow-x: auto;
+}
+
+.blocknote-editor-wrapper .bn-block-content pre {
+  margin: 0;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #d4d4d4;
+}
+
+/* 行内代码 */
+.blocknote-editor-wrapper .bn-inline-content code {
+  background: #f5f5f5;
+  border: 1px solid #e8e8e8;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  color: #c41d7f;
+}
+
+/* ========================================
+   内联格式（链接、粗体、斜体）
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-inline-content a {
+  color: #1890ff;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.blocknote-editor-wrapper .bn-inline-content a:hover {
+  border-bottom-color: #1890ff;
+}
+
+.blocknote-editor-wrapper .bn-inline-content strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.blocknote-editor-wrapper .bn-inline-content em {
+  font-style: italic;
+  color: #595959;
+}
+
+/* ========================================
+   占位符
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content[data-is-empty='true']::before {
+  color: #bfbfbf;
+  font-style: normal;
+}
+
+/* ========================================
+   侧边工具栏和拖拽
+   ======================================== */
+
+/* ========================================
+   斜杠命令菜单
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-slash-menu {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.blocknote-editor-wrapper .bn-slash-menu-item {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.blocknote-editor-wrapper .bn-slash-menu-item:hover {
+  background: #f5f5f5;
+}
+
+.blocknote-editor-wrapper .bn-slash-menu-item[data-selected='true'] {
+  background: #e6f7ff;
+}
+
+/* ========================================
+   格式化工具栏
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-formatting-toolbar {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  display: flex;
+  gap: 4px;
+}
+
+.blocknote-editor-wrapper .bn-toolbar-button {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #595959;
+  font-size: 14px;
+}
+
+.blocknote-editor-wrapper .bn-toolbar-button:hover {
+  background: #f5f5f5;
+  color: #1a1a1a;
+}
+
+.blocknote-editor-wrapper .bn-toolbar-button[data-active='true'] {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+/* ========================================
+   表格
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.blocknote-editor-wrapper .bn-block-content table th,
+.blocknote-editor-wrapper .bn-block-content table td {
+  border: 1px solid #e8e8e8;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.blocknote-editor-wrapper .bn-block-content table th {
+  background: #fafafa;
+  font-weight: 600;
+  color: #262626;
+}
+
+.blocknote-editor-wrapper .bn-block-content table tr:hover {
+  background: #fafafa;
+}
+
+/* ========================================
+   Mermaid 图表块
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-mermaid-block {
+  position: relative;
+  padding: 4px 0;
+  width: 100%;
+}
+
+.blocknote-editor-wrapper .bn-mermaid-block-view {
+  width: 100%;
+}
+
+.blocknote-editor-wrapper .bn-mermaid-block .antdx-mermaid {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(15, 40, 129, 0.12);
+}
+
+.blocknote-editor-wrapper .bn-mermaid-block[data-empty='true'] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blocknote-editor-wrapper .bn-mermaid-block-empty {
+  width: 100%;
+  padding: 28px 18px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 16px;
+  background: #fafafa;
+  text-align: center;
+  color: #bfbfbf;
+  font-size: 13px;
+}
+
+/* ========================================
+   图片和分割线
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 12px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.blocknote-editor-wrapper .bn-block-content hr {
+  border: none;
+  border-top: 2px solid #e8e8e8;
+  margin: 24px 0;
+}
+
+/* ========================================
+   选中状态
+   ======================================== */
+
+.blocknote-editor-wrapper .bn-block-outer[data-selected='true'] {
+  background: rgba(24, 144, 255, 0.05);
+  border-radius: 4px;
+}
+
+/* ========================================
+   深色模式（可选）
+   ======================================== */
+
+/* @media (prefers-color-scheme: dark) {
+  .blocknote-editor-wrapper .bn-block-content {
+    color: #e8e8e8;
+  }
+
+  .blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h1,
+  .blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h2,
+  .blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h3 {
+    color: #f5f5f5;
+  }
+
+  .blocknote-editor-wrapper .bn-inline-content code {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #ff85c0;
+  }
+
+  .blocknote-editor-wrapper .bn-block-content blockquote {
+    background: #1a2332;
+    border-left-color: #3b82f6;
+    color: #bfbfbf;
+  }
+} */
+
+/* ========================================
+   响应式调整
+   ======================================== */
+
+@media (max-width: 768px) {
+  .blocknote-editor-wrapper .bn-editor {
+    padding: 12px 16px;
+  }
+
+  .blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h1 {
+    font-size: 24px;
+  }
+
+  .blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h2 {
+    font-size: 20px;
+  }
+
+  .blocknote-editor-wrapper .bn-block-content[data-content-type='heading'] h3 {
+    font-size: 16px;
+  }
+
+  .blocknote-editor-wrapper .bn-title-input {
+    font-size: 28px !important;
+  }
+}
+
+/* ========================================
+   自定义行内文档引用 (docMention) 样式
+   ======================================= */
+
+.bn-custom-doc-mention {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin: 0 2px;
+  color: #1890ff;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
+
+.bn-custom-doc-mention:hover {
+  background-color: #bae7ff;
+  border-color: #69c0ff;
+  color: #096dd9;
+}
+
+.bn-custom-doc-mention svg {
+  margin-right: 4px;
+  color: #1890ff;
+}
+
+.bn-custom-doc-mention-external {
+  color: #1890ff;
+  text-decoration: underline;
+}
+
+/* ========================================
+   AI 生成高亮效果（不依赖编辑器焦点）
+   生成完成后的高亮由 BlockNote ShowSelectionExtension 官方 API 处理。
+   ======================================== */
+
+/* 正在生成中：蓝色左边框脉冲动画（typewriter 阶段使用） */
+.blocknote-editor-wrapper .bn-block-outer.ai-generating {
+  border-left: 3px solid rgba(24, 144, 255, 0.7) !important;
+  background: rgba(24, 144, 255, 0.06) !important;
+  border-radius: 0 4px 4px 0 !important;
+  animation: ai-block-pulse 1.2s ease-in-out infinite !important;
+  transition: none !important;
+}
+
+@keyframes ai-block-pulse {
+  0%,
+  100% {
+    border-left-color: rgba(24, 144, 255, 0.35);
+    background-color: rgba(24, 144, 255, 0.04);
+  }
+  50% {
+    border-left-color: rgba(24, 144, 255, 0.85);
+    background-color: rgba(24, 144, 255, 0.1);
+  }
+}
+
+/* 生成/修改完成后：绿蓝色背景闪烁并渐变淡出，代替原先会触发浮动面板的 Selection 选中效果 */
+.blocknote-editor-wrapper .bn-block-outer.ai-done {
+  animation: ai-block-done-fade 2.5s ease-out forwards !important;
+}
+
+@keyframes ai-block-done-fade {
+  0% {
+    background-color: rgba(82, 196, 26, 0.15); /* 浅绿/绿蓝色 */
+    border-left: 3px solid rgba(82, 196, 26, 0.8);
+  }
+  15% {
+    background-color: rgba(82, 196, 26, 0.15);
+    border-left: 3px solid rgba(82, 196, 26, 0.8);
+  }
+  100% {
+    background-color: transparent;
+    border-left: 3px solid transparent;
+  }
+}
+
+/* 删除过程中：红色背景，透明度递减，高度塌陷 */
+.blocknote-editor-wrapper .bn-block-outer.ai-deleting {
+  animation: ai-block-delete-animation 0.6s ease-in-out forwards !important;
+  pointer-events: none !important;
+}
+
+.blocknote-editor-wrapper .bn-block-outer.ai-deleting .bn-inline-content {
+  text-decoration: line-through !important;
+  color: #ff4d4f !important;
+}
+
+@keyframes ai-block-delete-animation {
+  0% {
+    background-color: rgba(245, 34, 45, 0.15); /* 浅红色 */
+    border-left: 3px solid rgba(245, 34, 45, 0.85);
+    opacity: 1;
+    transform: scale(1);
+    max-height: 200px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+  30% {
+    background-color: rgba(245, 34, 45, 0.25);
+    border-left: 3px solid rgba(245, 34, 45, 1);
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+  100% {
+    background-color: rgba(245, 34, 45, 0);
+    border-left: 3px solid transparent;
+    opacity: 0;
+    transform: scale(0.9);
+    max-height: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+  }
+}
+
+/* 正在删除中：红色左边框脉冲动画（流式删除期间使用） */
+.blocknote-editor-wrapper .bn-block-outer.ai-deleting-generating {
+  border-left: 3px solid rgba(245, 34, 45, 0.7) !important;
+  background: rgba(245, 34, 45, 0.06) !important;
+  border-radius: 0 4px 4px 0 !important;
+  animation: ai-block-delete-pulse 1.2s ease-in-out infinite !important;
+  transition: none !important;
+}
+
+.blocknote-editor-wrapper .bn-block-outer.ai-deleting-generating .bn-inline-content {
+  text-decoration: line-through !important;
+  color: #ff4d4f !important;
+}
+
+@keyframes ai-block-delete-pulse {
+  0%,
+  100% {
+    border-left-color: rgba(245, 34, 45, 0.35);
+    background-color: rgba(245, 34, 45, 0.04);
+  }
+  50% {
+    border-left-color: rgba(245, 34, 45, 0.85);
+    background-color: rgba(245, 34, 45, 0.1);
+  }
+}
+
+/* 正在更新的旧内容：橙色虚线左边框，半透明斜体，带有删除线 */
+.blocknote-editor-wrapper .bn-block-outer.ai-updating-old {
+  border-left: 3px dashed rgba(250, 140, 22, 0.75) !important;
+  background: rgba(250, 140, 22, 0.04) !important;
+  opacity: 0.55 !important;
+  transition:
+    opacity 0.3s ease,
+    border-color 0.3s ease;
+  pointer-events: none !important;
+}
+
+.blocknote-editor-wrapper .bn-block-outer.ai-updating-old .bn-inline-content {
+  text-decoration: line-through !important;
+  color: #fa8c16 !important;
+  font-style: italic !important;
+}

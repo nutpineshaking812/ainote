@@ -1,0 +1,56 @@
+{
+  "id": "system:knowledge-retrieval",
+  "name": "知识库检索(RAG)",
+  "type": "action",
+  "category": "aiAgent",
+  "icon": "ReadOutlined",
+  "iconColor": "#fa8c16",
+  "isAddon": true,
+  "allowedSlots": ["knowledge-slot"],
+  "description": "从知识集中检索",
+  "properties": [
+    {
+      "name": "query",
+      "label": "搜索问题",
+      "type": "string",
+      "required": true,
+      "default": "{{trigger.userInput}}"
+    },
+    {
+      "name": "knowledgeSetIds",
+      "label": "知识集资源",
+      "type": "knowledge",
+      "required": false,
+      "default": "{{trigger.knowledgeSetIds}}"
+    },
+    {
+      "name": "limit",
+      "label": "返回条数",
+      "type": "number",
+      "default": 5
+    },
+    {
+      "name": "minScore",
+      "label": "最低评分",
+      "type": "number",
+      "default": 0.5
+    }
+  ],
+  "outputs": [
+    {
+      "name": "contextString",
+      "label": "上下文文本",
+      "type": "string"
+    },
+    {
+      "name": "results",
+      "label": "检索结果数组",
+      "type": "array"
+    },
+    {
+      "name": "count",
+      "label": "记录数",
+      "type": "number"
+    }
+  ]
+}

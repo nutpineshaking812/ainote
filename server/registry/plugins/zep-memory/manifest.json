@@ -1,0 +1,71 @@
+{
+  "id": "zep-memory",
+  "name": "Zep 记忆提取",
+  "type": "action",
+  "category": "Memory",
+  "icon": "ThunderboltOutlined",
+  "iconColor": "#faad14",
+  "description": "从 Zep 长期记忆引擎中根据语义搜索用户相关的历史信息和摘要。",
+  "properties": [
+    {
+      "name": "collection",
+      "label": "记忆集合",
+      "type": "string",
+      "default": "user_memory",
+      "placeholder": "如果不填，默认使用 user_memory",
+      "description": "Zep 中的 Collection 名称，通常按用户或应用隔离。"
+    },
+    {
+      "name": "query",
+      "label": "记忆查询",
+      "type": "textarea",
+      "default": "user_memory",
+      "placeholder": "如果不填，默认使用 user_memory",
+      "description": "Zep 中的 Collection 名称，通常按用户或应用隔离。"
+    },
+    {
+      "name": "search_mode",
+      "label": "搜索模式",
+      "type": "select",
+      "default": "perceived",
+      "description": "选择记忆检索的策略。",
+      "options": [
+        { "label": "感知检索 (Perceived)", "value": "perceived" },
+        { "label": "事实检索 (Facts)", "value": "facts" },
+        { "label": "摘要检索 (Summary)", "value": "summary" }
+      ]
+    },
+    {
+      "name": "topK",
+      "label": "提取记忆条数",
+      "type": "number",
+      "default": 3,
+      "description": "返回最相关的记忆记录数量。"
+    },
+    {
+      "name": "minScore",
+      "label": "相似度阈值",
+      "type": "number",
+      "default": 0.7,
+      "step": 0.1,
+      "description": "只有得分高于此值的记忆才会被返回。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "content",
+      "label": "提取到的记忆正文",
+      "type": "string"
+    },
+    {
+      "name": "summary",
+      "label": "历史摘要",
+      "type": "string"
+    },
+    {
+      "name": "confidence",
+      "label": "匹配得分",
+      "type": "number"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "knowledgeDocNode",
+  "name": "知识文档",
+  "type": "action",
+  "category": "aiAgent",
+  "icon": "BookOutlined",
+  "iconColor": "#fa8c16",
+  "isAddon": true,
+  "allowedSlots": ["knowledge-slot"],
+  "description": "挂载静态知识文档供智能体精读",
+  "properties": [
+    {
+      "name": "knowledgeIds",
+      "label": "知识文档",
+      "type": "knowledgeIds",
+      "required": true,
+      "placeholder": "请选择知识文档",
+      "description": "智能体将自动在 /knowledge/ 目录下挂载并精读这些静态文档。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "knowledgeIds",
+      "label": "静态知识文档 IDs",
+      "type": "array"
+    }
+  ]
+}

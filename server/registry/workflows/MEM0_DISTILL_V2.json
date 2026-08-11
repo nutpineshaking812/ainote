@@ -1,0 +1,47 @@
+{
+  "name": "MEM0_DISTILL_V2",
+  "workflowKey": "MEM0_DISTILL_V2",
+  "description": "基于 Mem0 的自动提炼流程：接收素材并自动进行跨会话 Facts 归口更新。",
+  "scope": "SYSTEM",
+  "category": "AI_MEMORY_DISTILL",
+  "triggerType": "CAPABILITY",
+  "status": "ACTIVE",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "capability",
+      "data": {
+        "label": "提炼素材入口",
+        "inputs": [
+          { "name": "content", "type": "string", "required": true },
+          { "name": "userId", "type": "string", "isSystem": true },
+          { "name": "sessionName", "type": "string" }
+        ]
+      },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "mem_store",
+      "type": "plugin-action",
+      "data": {
+        "label": "Mem0 自动存储与对齐",
+        "pluginId": "mem0-distill",
+        "pluginParams": {
+          "userId": "{{trigger.sessionId}}",
+          "content": "素材背景：提炼内容：{{trigger.content}}"
+        }
+      },
+      "position": { "x": 300, "y": 0 }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "data": { "label": "学毕", "outputs": [] },
+      "position": { "x": 600, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "target": "mem_store" },
+    { "id": "e2", "source": "mem_store", "target": "end" }
+  ]
+}

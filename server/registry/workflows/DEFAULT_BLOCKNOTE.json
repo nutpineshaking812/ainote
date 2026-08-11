@@ -1,0 +1,45 @@
+{
+  "name": "DEFAULT_BLOCKNOTE",
+  "workflowKey": "DEFAULT_BLOCKNOTE",
+  "description": "系统默认文档辅助流程，支持单次 AI 生成或内容重写。",
+  "scope": "SYSTEM",
+  "triggerType": "CAPABILITY",
+  "status": "ACTIVE",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "capability",
+      "data": { 
+        "label": "开始",
+        "inputs": [
+          { "name": "messages", "type": "array", "required": true },
+          { "name": "toolDefinitions", "type": "array", "required": false }
+        ]
+      },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "blocknote",
+      "type": "aiAgent",
+      "data": {
+        "label": "AI 智能体",
+        "type": "blocknote",
+        "prompt": "你是一个文档助手，请根据用户指令处理文档内容。",
+        "userPrompt": "{{trigger.messages}}",
+        "toolDefinitions": "{{trigger.toolDefinitions}}",
+        "toolChoice": "required"
+      },
+      "position": { "x": 300, "y": 0 }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "data": { "label": "结束", "outputs": [] },
+      "position": { "x": 600, "y": 0 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "target": "blocknote" },
+    { "id": "e2", "source": "blocknote", "target": "end" }
+  ]
+}

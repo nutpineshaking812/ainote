@@ -1,0 +1,98 @@
+{
+  "name": "DEFAULT_MEMORY_DISTILL",
+  "workflowKey": "DEFAULT_MEMORY_DISTILL",
+  "description": "高级提炼流程：支持单次提取多个知识维度（事实/规则/决策），并通过现有大纲引导减少冗余，自动循环路由到对应文档。",
+  "scope": "SYSTEM",
+  "category": "AI_MEMORY_DISTILL",
+  "triggerType": "CAPABILITY",
+  "status": "ACTIVE",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "capability",
+      "data": { 
+        "label": "接收素材",
+        "inputs": [
+          { "name": "content", "type": "string", "required": true },
+          { "name": "appId", "type": "string", "isSystem": true },
+          { "name": "sessionId", "type": "string", "isSystem": true },
+          { "name": "sessionName", "type": "string", "isSystem": true }
+        ]
+      },
+      "position": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "get_headers",
+      "type": "getMemoryHeaders",
+      "data": {
+        "label": "获取现有知识大纲",
+        "appId": "{{trigger.appId}}",
+        "sessionId": "{{trigger.sessionId}}",
+        "sessionName": "{{trigger.sessionName}}"
+      },
+      "position": { "x": 200, "y": 100 }
+    },
+    {
+      "id": "agent",
+      "type": "aiAgent",
+      "data": {
+        "label": "维度识别与引导式提炼",
+        "model": "qwen",
+        "jsonMode": true,
+        "enableThinking": false,
+        "prompt": "你是一个严谨的知识工程专家。请从素材中提炼核心知识点，并按类别拆解。\n\n## 提炼要求\n1. 结构化：优先使用 Markdown 无序列表 (- ) 记录，**列表项之间严禁有空行**。\n2. 分类：\n   - **FACT**: 基础事实、技术栈等。追求最新、唯一。\n   - **SOP**: 操作流程、设计规范。描述具体做法。\n   - **DECISION**: 技术选型理由、会议结论。\n3. 原子化：`extractedItems` 用于更新百科。**请参考现有的知识大纲（下文提供），如果素材对应的知识点已有主题，请务必复用旧标题以实现覆盖更新。**\n4. 完整性：`fullSummary` 是本次会话总结的所有内容。必须使用紧凑的 Markdown 列表，每一项占一行，**禁止出现连续的两个换行符**。\n\n## 输出格式 (JSON)\n必须返回对象，包含：\n- `extractedItems`: 数组，每项含 {sectionHeader, category, content(纯净列表)}。\n- `fullSummary`: 完整的 Markdown 总结文字 (紧凑列表，不含二级标题)。",
+        "userPrompt": "### 现有知识大纲\n{{nodes.get_headers.output.categories}}\n\n### 待处理素材内容\n{{trigger.content}}"
+      },
+      "position": { "x": 450, "y": 0 }
+    },
+    {
+      "id": "loop",
+      "type": "for",
+      "data": {
+        "label": "同步百科 (Latest)",
+        "iterator": "{{nodes.agent.output.extractedItems}}"
+      },
+      "position": { "x": 750, "y": 0 }
+    },
+    {
+      "id": "save_dim",
+      "type": "upsertMemorySection",
+      "data": {
+        "label": "更新百科章节",
+        "appId": "{{trigger.appId}}",
+        "sectionHeader": "{{nodes.loop.output.item.sectionHeader}}",
+        "category": "{{nodes.loop.output.item.category}}",
+        "content": "{{nodes.loop.output.item.content}}"
+      },
+      "position": { "x": 1000, "y": -80 }
+    },
+    {
+      "id": "save_day",
+      "type": "upsertMemorySection",
+      "data": {
+        "label": "记录会话日志 (Change Log)",
+        "appId": "{{trigger.appId}}",
+        "sectionHeader": "{{trigger.sessionName}}",
+        "title": "SNAPSHOT_DAILY_{{now|date:YYYY_MM_DD}}",
+        "category": "SNAPSHOT",
+        "content": "{{nodes.agent.output.fullSummary}}"
+      },
+      "position": { "x": 1000, "y": 150 }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "data": { "label": "结束", "outputs": [] },
+      "position": { "x": 1300, "y": 150 }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "start", "target": "get_headers" },
+    { "id": "e2", "source": "get_headers", "target": "agent" },
+    { "id": "e3", "source": "agent", "target": "loop" },
+    { "id": "e4", "source": "loop", "target": "save_dim", "sourceHandle": "loop" },
+    { "id": "e5", "source": "save_dim", "target": "loop" },
+    { "id": "e6", "source": "loop", "target": "save_day", "sourceHandle": "exit" },
+    { "id": "e7", "source": "save_day", "target": "end" }
+  ]
+}

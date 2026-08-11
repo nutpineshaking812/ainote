@@ -1,0 +1,27 @@
+{
+  "id": "code",
+  "name": "JavaScript代码",
+  "type": "action",
+  "category": "logic",
+  "icon": "CodeOutlined",
+  "iconColor": "#722ed1",
+  "description": "安全运行自定义 JavaScript 脚本以进行复杂的数据处理或格式转换。",
+  "properties": [
+    {
+      "name": "code",
+      "label": "JavaScript 代码",
+      "type": "javascript",
+      "required": true,
+      "default": "// 在此编写您的自定义代码\n// 全局变量 'input' 包含了上一节点传递过来的输入数据\n// 请使用 return 语句返回处理后的对象\n\nlog('收到数据', input);\n\nreturn {\n  success: true,\n  processedData: input\n};",
+      "placeholder": "请输入 JavaScript 代码..."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "label": "处理结果",
+      "type": "object",
+      "description": "代码 return 返回的 JSON 对象或值"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "ensureConvo",
+  "name": "确保会话",
+  "type": "action",
+  "category": "conversation",
+  "icon": "MessageOutlined",
+  "iconColor": "#722ed1",
+  "description": "确保指定 ID 的会话存在，若不存在则创建。支持绑定场景、目标对象、数字员工及初始消息。",
+  "properties": [
+    {
+      "name": "conversationId",
+      "label": "会话 ID (conversationId)",
+      "type": "variableInput",
+      "default": "{{trigger.sessionId}}",
+      "placeholder": "不传则默认自动生成新会话。"
+    },
+    {
+      "name": "scenario",
+      "label": "场景类型 (scenario)",
+      "type": "variableInput",
+      "default": "{{trigger.scenario}}",
+      "placeholder": "不传则默认使用通用会话场景(general)。"
+    },
+    {
+      "name": "targetId",
+      "label": "目标 ID (targetId)",
+      "type": "variableInput",
+      "default": "{{trigger.targetId}}",
+      "placeholder": "支持绑定变量。如挂载的文档 ID、分析资源 ID 等。"
+    },
+    {
+      "name": "employeeId",
+      "label": "数字人 ID (employeeId)",
+      "type": "variableInput",
+      "default": "{{trigger.employeeId}}",
+      "placeholder": "支持绑定变量。用于关联具体的数字员工大脑/Agent。"
+    },
+    {
+      "name": "initialMessage",
+      "label": "初始消息 (initialMessage)",
+      "type": "variableInput",
+      "default": "{{trigger.message}}",
+      "placeholder": "当会话不存在自动创建时，作为新会话的第一条消息和标题生成来源。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "conversationId",
+      "label": "会话 ID (conversationId)",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "label": "会话标题",
+      "type": "string"
+    },
+    {
+      "name": "scenario",
+      "label": "会话场景 (scenario)",
+      "type": "string"
+    },
+    {
+      "name": "createdAt",
+      "label": "创建时间",
+      "type": "string"
+    },
+    {
+      "name": "isNew",
+      "label": "是否为新创建的会话",
+      "type": "boolean"
+    }
+  ]
+}

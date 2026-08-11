@@ -1,0 +1,9 @@
+Flask>=2.0.0
+python-dotenv>=1.0.0
+gunicorn>=21.2.0
+markitdown>=0.1.0
+pypandoc
+pymupdf4llm
+pymupdf
+Pillow
+requests

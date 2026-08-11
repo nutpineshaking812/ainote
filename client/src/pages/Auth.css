@@ -1,0 +1,46 @@
+:root {
+  --primary-color: #1890ff;
+  --primary-color-hover: #40a9ff;
+  --background-gradient-start: #f0f2f5;
+  --background-gradient-end: #d9e8ff;
+}
+
+.auth-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+}
+
+.auth-card {
+  width: 400px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-header .app-logo {
+  height: 40px;
+  margin-bottom: 16px;
+}
+
+.auth-header .app-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}

@@ -1,0 +1,116 @@
+.create-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.create-choice-card {
+  border-radius: 14px;
+  border: 1px solid rgba(16, 24, 40, 0.08);
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.create-choice-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(16, 24, 40, 0.12);
+}
+
+.create-choice-card .ant-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.create-choice-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 14px 26px rgba(16, 24, 40, 0.15);
+  color: #ffffff;
+}
+
+.create-choice-card h5.ant-typography {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.create-choice-card span.ant-typography {
+  color: #6b7280 !important;
+}
+
+/* Sider layout & collapse styles */
+.app-sider {
+  transition:
+    width 200ms ease,
+    background-color 200ms ease;
+}
+.sider-header {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.sider-header .ant-typography {
+  transition: opacity 160ms ease;
+  letter-spacing: -0.01em;
+}
+.sider-header .collapse-btn {
+  color: rgba(0, 0, 0, 0.55);
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+.sider-header .collapse-btn:hover {
+  transform: scale(1.06);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.sidebar-user:hover,
+.hover-item:hover {
+  background-color: rgba(55, 53, 47, 0.08) !important;
+}
+.app-sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+}
+.app-sider.collapsed .ant-layout-sider-children {
+  padding-top: 0;
+}
+.app-sider.collapsed .ant-typography {
+  opacity: 0.95;
+}
+
+/* Floating Collapse Button (shown when sider collapsed) */
+.sider-toggle-floating {
+  position: fixed;
+  left: 8px;
+  top: 22px;
+  z-index: 1200;
+}
+
+/* Sidebar item alignment */
+.hover-item {
+  min-height: 28px;
+  transition: background-color 0.1s ease;
+}
+
+.hover-item-dark:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.hover-card-playroom {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.hover-card-playroom:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25) !important;
+}
+

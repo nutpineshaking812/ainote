@@ -1,0 +1,8 @@
+node_modules
+uploads
+.env
+.git
+.vscode
+Dockerfile
+docker-compose.yml
+scripts/sync-db.sh

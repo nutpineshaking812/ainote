@@ -1,0 +1,627 @@
+{
+  "name": "数字人",
+  "workflowKey": "DIGITAL_EMPLOYEE",
+  "category": "digitalEmployee",
+  "description": "数字人",
+  "nodes": [
+    {
+      "id": "start",
+      "data": {
+        "label": "用户输入",
+        "inputs": [
+          {
+            "name": "systemPrompt",
+            "type": "prompt",
+            "label": "人格设定 (Persona)",
+            "required": true,
+            "description": "定义数字员工的角色、语气和行为规范"
+          },
+          {
+            "name": "message",
+            "type": "string",
+            "label": "用户消息",
+            "required": true,
+            "description": "用户消息"
+          },
+          {
+            "name": "model",
+            "type": "model",
+            "label": "推理模型 (Brain)",
+            "required": true,
+            "description": "驱动数字员工思考的 LLM 模型"
+          },
+          {
+            "name": "knowledgeSetIds",
+            "type": "knowledge",
+            "label": "挂载知识库 (RAG)",
+            "required": false,
+            "description": "数字员工可搜索的私有知识库范围"
+          },
+          {
+            "name": "skillIds",
+            "type": "skills",
+            "label": "专业能力 (Skills)",
+            "required": false,
+            "description": "赋予数字员工执行外部操作的能力"
+          }
+        ]
+      },
+      "type": "capability",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 150,
+        "y": 900
+      },
+      "selected": false
+    },
+    {
+      "id": "ensureConvo_6PAK",
+      "data": {
+        "type": "GENERAL",
+        "label": "确定会话",
+        "message": "{{trigger.message}}",
+        "conversationId": "{{trigger.sessionId}}"
+      },
+      "type": "ensureConvo",
+      "outputs": {
+        "title": {
+          "type": "string",
+          "description": "Conversation title"
+        },
+        "conversationId": {
+          "type": "string",
+          "description": "Database Conversation ID"
+        }
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 455,
+        "y": 900
+      },
+      "selected": false
+    },
+    {
+      "id": "addMessage_XTW8",
+      "data": {
+        "role": "user",
+        "label": "记录并开启回复",
+        "content": "{{trigger.message}}",
+        "openBubble": true,
+        "conversationId": "{{ensureConvo_6PAK.conversationId}}"
+      },
+      "type": "addMessage",
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 755,
+        "y": 900
+      },
+      "selected": false
+    },
+    {
+      "id": "fetchMemory_R2TE",
+      "data": {
+        "label": "加载上下文/记忆",
+        "limit": 10,
+        "conversationId": "{{ensureConvo_6PAK.conversationId}}"
+      },
+      "type": "fetchMemory",
+      "dragging": false,
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "position": {
+        "x": 75,
+        "y": 1365
+      },
+      "selected": false
+    },
+    {
+      "id": "aiAgent_B9BR",
+      "data": {
+        "refs": "{{trigger.refs}}",
+        "docId": "{{trigger.docId}}",
+        "label": "AI 智能体",
+        "model": "qwen3.5-plus",
+        "prompt": "{{trigger.systemPrompt}}\n\n## 引用上下文\n- 当前文档 ID: {{trigger.docId}}\n- 引用资源列表: {{trigger.refs | json}}\n\n## 长期记忆与知识库\n你可以通过 `recall_memory` 工具搜索历史会话中记录的所有事实 (Fact) 和故事背景。对于任何关于“刚才说过的”、“以前提到过的”或特定业务知识的内容，请优先使用检索工具。\n\n## 专家派发与模板执行规则\n当你触发特定的模板/SOP技能处理文档时：\n1. **素材优先**：必须先获取素材正文，严禁将用户指令当素材传入。\n2. **禁止预处理**：在准备工具参数时，请直接传入原始素材，【严禁】在参数中自行对素材进行预先的格式化或摘要处理。\n3. **输出禁令**：子技能产生的处理结果已通过流式实时推送给用户。你收到系统反馈后，【严禁再次重复、摘要或展示该结果的正文】。\n4. **完结指令**：任务处理完成后，只需输出一句非常简短的对话确认（如：“已为您整理完成。”）或者提供针对结果的下一步操作建议。",
+        "sessionId": "{{trigger.sessionId}}",
+        "userPrompt": "{{trigger.message}}",
+        "sessionName": "{{trigger.sessionName}}",
+        "enableSearch": true,
+        "enableThinking": true,
+        "connectedSkillCount": 20
+      },
+      "type": "aiAgent",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 150,
+        "y": 1095
+      },
+      "selected": false
+    },
+    {
+      "id": "recallKnowledge_XDPR",
+      "data": {
+        "label": "知识召回",
+        "workflowId": "system_MEM0_RECALL_V2"
+      },
+      "type": "recallKnowledge",
+      "dragging": false,
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "position": {
+        "x": 135,
+        "y": 1485
+      },
+      "selected": false
+    },
+    {
+      "id": "loadMemory_TQQB",
+      "data": {
+        "label": "查询增量消息",
+        "afterTime": "{{pla_4RTJ.value}}",
+        "conversationId": "{{ensureConvo_6PAK.conversationId}}"
+      },
+      "type": "loadMemory",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 765,
+        "y": 1095
+      },
+      "selected": false
+    },
+    {
+      "id": "if_JXQT",
+      "data": {
+        "label": "增量消息回写?",
+        "condition": "{{loadMemory_TQQB.count}} >= 20"
+      },
+      "type": "if",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 450,
+        "y": 1305
+      },
+      "selected": false
+    },
+    {
+      "id": "skillNode_9NKU",
+      "data": {
+        "label": "全局能力",
+        "skillIds": "{{trigger.skillIds}}"
+      },
+      "type": "skillNode",
+      "dragging": false,
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "position": {
+        "x": 285,
+        "y": 1365
+      },
+      "selected": false
+    },
+    {
+      "id": "end",
+      "data": {
+        "label": "结束",
+        "outputs": []
+      },
+      "type": "end",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 1050,
+        "y": 1500
+      },
+      "selected": false
+    },
+    {
+      "id": "pla_Q5DX",
+      "data": {
+        "pluginId": "system:knowledge-retrieval",
+        "pluginParams": {
+          "limit": 5,
+          "query": "{{trigger.message}}",
+          "minScore": 0.5,
+          "knowledgeSetIds": "{{trigger.knowledgeSetIds}}"
+        }
+      },
+      "type": "plugin-action",
+      "dragging": false,
+      "measured": {
+        "width": 120,
+        "height": 93
+      },
+      "position": {
+        "x": 240,
+        "y": 1485
+      },
+      "selected": false
+    },
+    {
+      "id": "pla_4RTJ",
+      "data": {
+        "outputs": [
+          {
+            "name": "value",
+            "type": "string",
+            "label": "变量值"
+          }
+        ],
+        "pluginId": "readUserProperty",
+        "pluginParams": {
+          "key": "distill_cursors_{{trigger.sessionId}}",
+          "ttl": -1,
+          "defaultValue": "0"
+        }
+      },
+      "type": "plugin-action",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 450,
+        "y": 1095
+      },
+      "selected": false
+    },
+    {
+      "id": "pla_Y4F6",
+      "data": {
+        "outputs": [
+          {
+            "name": "value",
+            "type": "string",
+            "label": "更新后的值"
+          }
+        ],
+        "pluginId": "writeUserProperty",
+        "pluginParams": {
+          "key": "distill_cursors_{{trigger.sessionId}}",
+          "ttl": -1,
+          "value": "{{loadMemory_TQQB.latestMessageTime}}",
+          "strategy": "overwrite"
+        }
+      },
+      "type": "plugin-action",
+      "dragging": false,
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "position": {
+        "x": 765,
+        "y": 1305
+      },
+      "selected": false
+    },
+    {
+      "id": "pla_XACV",
+      "type": "plugin-action",
+      "position": {
+        "x": 1065,
+        "y": 1305
+      },
+      "data": {
+        "pluginId": "subworkflow",
+        "pluginParams": {
+          "workflowId": "system_MEM0_DISTILL_V2",
+          "inputData": {
+            "content": "{{loadMemory_TQQB.plainText | json}}",
+            "userId": "{{trigger.userId}}",
+            "sessionName": "{{trigger.sessionName}}"
+          },
+          "async": false,
+          "enableOutput": true
+        },
+        "outputs": [
+          {
+            "name": "success",
+            "label": "是否执行成功",
+            "type": "boolean"
+          },
+          {
+            "name": "result",
+            "label": "执行返回结果",
+            "type": "object"
+          },
+          {
+            "name": "childWorkflowId",
+            "label": "子工作流执行 ID",
+            "type": "string"
+          }
+        ]
+      },
+      "measured": {
+        "width": 220,
+        "height": 140
+      },
+      "selected": false,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__start-ensureConvo_6PAK",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "start",
+      "target": "ensureConvo_6PAK",
+      "animated": true,
+      "className": "",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      }
+    },
+    {
+      "id": "xy-edge__ensureConvo_6PAK-addMessage_XTW8",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "ensureConvo_6PAK",
+      "target": "addMessage_XTW8",
+      "animated": true,
+      "className": "",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      }
+    },
+    {
+      "id": "xy-edge__addMessage_XTW8-aiAgent_B9BR",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "addMessage_XTW8",
+      "target": "aiAgent_B9BR",
+      "animated": true,
+      "className": "",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      }
+    },
+    {
+      "id": "xy-edge__loadMemory_TQQB-if_JXQT",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "loadMemory_TQQB",
+      "target": "if_JXQT",
+      "animated": true,
+      "className": "",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      }
+    },
+    {
+      "id": "xy-edge__if_JXQTfalse-end",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "if_JXQT",
+      "target": "end",
+      "animated": true,
+      "className": "",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "sourceHandle": "false"
+    },
+    {
+      "id": "xy-edge__recallKnowledge_XDPRaddon-output-aiAgent_B9BRknowledge-slot",
+      "type": "default",
+      "style": {
+        "stroke": "#fa8c16",
+        "strokeWidth": 3,
+        "strokeDasharray": "5,5"
+      },
+      "source": "recallKnowledge_XDPR",
+      "target": "aiAgent_B9BR",
+      "animated": true,
+      "className": "knowledge-edge",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#fa8c16"
+      },
+      "sourceHandle": "addon-output",
+      "targetHandle": "knowledge-slot"
+    },
+    {
+      "id": "xy-edge__skillNode_9NKUaddon-output-aiAgent_B9BRtool-slot",
+      "type": "default",
+      "style": {
+        "stroke": "#722ed1",
+        "strokeWidth": 3,
+        "strokeDasharray": "5,5"
+      },
+      "source": "skillNode_9NKU",
+      "target": "aiAgent_B9BR",
+      "animated": true,
+      "className": "skill-edge",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#722ed1"
+      },
+      "sourceHandle": "addon-output",
+      "targetHandle": "tool-slot"
+    },
+    {
+      "id": "xy-edge__pla_Q5DXaddon-output-aiAgent_B9BRknowledge-slot",
+      "type": "default",
+      "style": {
+        "stroke": "#fa8c16",
+        "strokeWidth": 3,
+        "strokeDasharray": "5,5"
+      },
+      "source": "pla_Q5DX",
+      "target": "aiAgent_B9BR",
+      "animated": true,
+      "className": "knowledge-edge",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#fa8c16"
+      },
+      "sourceHandle": "addon-output",
+      "targetHandle": "knowledge-slot"
+    },
+    {
+      "id": "xy-edge__fetchMemory_R2TEaddon-output-aiAgent_B9BRmemory-slot",
+      "type": "default",
+      "style": {
+        "stroke": "#52c41a",
+        "strokeWidth": 3,
+        "strokeDasharray": "5,5"
+      },
+      "source": "fetchMemory_R2TE",
+      "target": "aiAgent_B9BR",
+      "animated": true,
+      "className": "memory-edge",
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#52c41a"
+      },
+      "sourceHandle": "addon-output",
+      "targetHandle": "memory-slot"
+    },
+    {
+      "id": "xy-edge__aiAgent_B9BR-pla_4RTJ",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "aiAgent_B9BR",
+      "target": "pla_4RTJ",
+      "animated": true,
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "className": ""
+    },
+    {
+      "id": "xy-edge__pla_4RTJ-loadMemory_TQQB",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "pla_4RTJ",
+      "target": "loadMemory_TQQB",
+      "animated": true,
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "className": ""
+    },
+    {
+      "id": "xy-edge__if_JXQTtrue-pla_Y4F6",
+      "type": "default",
+      "style": {
+        "stroke": "#b1b1b7",
+        "strokeWidth": 2
+      },
+      "source": "if_JXQT",
+      "target": "pla_Y4F6",
+      "animated": true,
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "sourceHandle": "true",
+      "className": ""
+    },
+    {
+      "type": "default",
+      "animated": true,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#b1b1b7"
+      },
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "source": "pla_Y4F6",
+      "target": "pla_XACV",
+      "id": "xy-edge__pla_Y4F6-pla_XACV"
+    },
+    {
+      "type": "default",
+      "animated": true,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#b1b1b7"
+      },
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#b1b1b7"
+      },
+      "source": "pla_XACV",
+      "target": "end",
+      "targetHandle": "in",
+      "id": "xy-edge__pla_XACV-end"
+    }
+  ],
+  "triggerType": "CAPABILITY",
+  "skillConfig": {
+    "description": "",
+    "inputSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {}
+    }
+  }
+}

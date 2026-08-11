@@ -1,0 +1,51 @@
+{
+  "id": "writeUserProperty",
+  "name": "写入个人变量",
+  "type": "action",
+  "category": "variables",
+  "icon": "SaveOutlined",
+  "iconColor": "#f5222d",
+  "description": "向用户云端变量中写入或更新指定变量的值（支持设置生存时间 TTL 自动失效）。",
+  "properties": [
+    {
+      "name": "key",
+      "label": "变量键名",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "请输入变量名称 (例如: money)"
+    },
+    {
+      "name": "value",
+      "label": "写入的值",
+      "type": "string",
+      "required": true,
+      "placeholder": "请输入写入的变量值"
+    },
+    {
+      "name": "strategy",
+      "label": "更新策略",
+      "type": "select",
+      "default": "overwrite",
+      "options": [
+        { "label": "覆盖写入 (overwrite)", "value": "overwrite" },
+        { "label": "数值累加 (increment)", "value": "increment" },
+        { "label": "存在则忽略 (ignore)", "value": "ignore" }
+      ]
+    },
+    {
+      "name": "ttl",
+      "label": "生存时间 (TTL)",
+      "type": "number",
+      "required": false,
+      "default": -1,
+      "placeholder": "单位为秒，例如 3600 代表一小时后失效，-1或留空代表永久有效"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "value",
+      "label": "更新后的值",
+      "type": "string"
+    }
+  ]
+}

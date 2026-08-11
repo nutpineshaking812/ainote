@@ -1,0 +1,55 @@
+{
+  "id": "subworkflow",
+  "name": "执行子工作流",
+  "type": "action",
+  "category": "utility",
+  "icon": "BranchesOutlined",
+  "iconColor": "#722ed1",
+  "description": "触发并执行另一个子工作流，支持同步等待结果或异步触发，支持控制是否向下游实时流式输出消息。",
+  "properties": [
+    {
+      "name": "workflowId",
+      "label": "选择子工作流 ID",
+      "type": "workflowSelector",
+      "required": true,
+      "placeholder": "请选择或绑定要执行的子工作流"
+    },
+    {
+      "name": "inputData",
+      "label": "配置子流输入参数",
+      "type": "subworkflowParams",
+      "placeholder": "请先选择子工作流以同步其输入契约"
+    },
+    {
+      "name": "async",
+      "label": "异步执行",
+      "type": "boolean",
+      "default": false,
+      "description": "开启后，触发子工作流后立即返回，不会等待其执行完成。"
+    },
+    {
+      "name": "enableOutput",
+      "label": "是否输出 (SSE 消息流式输出)",
+      "type": "boolean",
+      "default": true,
+      "description": "开启后，子工作流产生的流式消息 (文本、思考流等) 会透传并输出到最外层前端会话流中。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否执行成功",
+      "type": "boolean"
+    },
+    {
+      "name": "result",
+      "label": "执行返回结果",
+      "type": "object"
+    },
+    {
+      "name": "childWorkflowId",
+      "label": "子工作流执行 ID",
+      "type": "string"
+    }
+  ]
+}

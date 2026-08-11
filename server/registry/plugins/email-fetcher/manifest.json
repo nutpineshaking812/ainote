@@ -1,0 +1,103 @@
+{
+  "id": "email-fetcher",
+  "name": "收取邮件",
+  "type": "action",
+  "category": "utility",
+  "icon": "MailOutlined",
+  "iconColor": "#52c41a",
+  "description": "通过 IMAP 协议从指定邮箱收取最新的邮件，支持按未读状态、数量进行配置收取。",
+  "properties": [
+    {
+      "name": "host",
+      "label": "IMAP 服务器地址",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "例如：imap.qq.com 或 imap.outlook.com"
+    },
+    {
+      "name": "port",
+      "label": "IMAP 端口",
+      "type": "number",
+      "default": 993,
+      "required": true
+    },
+    {
+      "name": "secure",
+      "label": "使用 SSL/TLS 安全连接",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "username",
+      "label": "邮箱账号",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "例如：your_email@qq.com"
+    },
+    {
+      "name": "password",
+      "label": "密码 / 授权码",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "多数邮箱（如QQ/网易）需填入专门的 IMAP 客户端授权码"
+    },
+    {
+      "name": "mailbox",
+      "label": "目标邮箱文件夹",
+      "type": "variableInput",
+      "default": "INBOX",
+      "required": true
+    },
+    {
+      "name": "limit",
+      "label": "最大收取数量",
+      "type": "number",
+      "default": 5,
+      "required": true
+    },
+    {
+      "name": "onlyUnread",
+      "label": "仅收取未读邮件",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "markAsRead",
+      "label": "收取后标记为已读",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "subjectKeyword",
+      "label": "按主题关键字过滤",
+      "type": "variableInput",
+      "placeholder": "选填。如：工作汇报。仅收取主题包含此关键字的邮件。",
+      "description": "选填。通过主题包含的关键字过滤邮件（例如填“周报”，则仅收取主题含“周报”的邮件）。"
+    },
+    {
+      "name": "sinceDate",
+      "label": "按起始日期过滤",
+      "type": "dateFilterSelector",
+      "placeholder": "请选择日期过滤范围，或切换自定义进行变量绑定",
+      "description": "可以选择我们预设的常用过滤范围（如今天、昨天、过去24小时、过去7天等），或者选择“自定义/绑定变量”进行复杂规则输入或动态变量参数插值。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否收取成功",
+      "type": "boolean"
+    },
+    {
+      "name": "count",
+      "label": "收到的邮件数量",
+      "type": "number"
+    },
+    {
+      "name": "emails",
+      "label": "邮件列表 (数组)",
+      "type": "array",
+      "description": "包含每封邮件的 subject, from, to, content, date, hasAttachments 等字段"
+    }
+  ]
+}

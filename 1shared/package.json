@@ -1,0 +1,19 @@
+{
+  "name": "@ainote/shared",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./utils/content": "./utils/content.js",
+    "./constants/events": "./constants/events.js",
+    "./schemas/messages": "./schemas/messages.js",
+    "./blocknote": "./blocknote/index.js"
+  },
+  "dependencies": {
+    "@ant-design/x": "^2.1.1",
+    "@blocknote/core": "^0.45.0",
+    "prosemirror-model": "^1.23.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

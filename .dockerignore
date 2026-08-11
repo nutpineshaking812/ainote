@@ -1,0 +1,21 @@
+**/node_modules
+**/node_modules/**
+**/.pnpm-store
+python/venv
+dist
+client/dist
+.git
+.vscode
+*.log
+.DS_Store
+# Tauri Rust 构建产物 - 体积巨大，无需在 Docker 构建中使用
+client/src-tauri/target
+client/src-tauri/gen
+client/src-tauri/icons
+client/src-tauri/node_modules
+# 其他不需要的文件
+*.md
+docs
+sandbox
+docker
+python

@@ -1,0 +1,36 @@
+# Dependencies
+/node_modules
+/uploads
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.staging
+.env.test
+
+# Storage & logs
+storage/
+*.log
+logs/
+
+# System files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Certificates & keys
+*.pem
+*.key
+*.crt
+
+# Misc
+qdrant_bin/*
+/.playwright-mcp

@@ -1,0 +1,56 @@
+{
+  "id": "execute-skill",
+  "name": "执行 Skill",
+  "type": "action",
+  "category": "utility",
+  "icon": "ToolOutlined",
+  "iconColor": "#389e0d",
+  "description": "在工作流中直接调用并执行指定的 Skill (工具/MCP/代码技能)",
+  "properties": [
+    {
+      "name": "skillId",
+      "label": "选择 Skill",
+      "type": "skillSelectorSingle",
+      "required": true,
+      "placeholder": "请选择要执行的 Skill"
+    },
+    {
+      "name": "systemPrompt",
+      "label": "系统提示词 (System Prompt)",
+      "type": "prompt",
+      "required": false,
+      "placeholder": "若该 Skill 包含大语言模型对话，可通过设定提示词来微调和约束其行为规则，支持 {{ }} 变量插值。"
+    },
+    {
+      "name": "message",
+      "label": "输入 (Message)",
+      "type": "prompt",
+      "required": false,
+      "placeholder": "输入内容，支持 {{ }} 变量插值。"
+    },
+    {
+      "name": "model",
+      "label": "大语言模型 (Model)",
+      "type": "model",
+      "required": false,
+      "placeholder": "请选择运行该 Skill 时的模型，若为空则使用系统默认模型"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否执行成功",
+      "type": "boolean"
+    },
+    {
+      "name": "result",
+      "label": "执行结果",
+      "type": "object"
+    },
+    {
+      "name": "error",
+      "label": "错误信息",
+      "type": "string"
+    }
+  ]
+}

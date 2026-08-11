@@ -1,0 +1,98 @@
+{
+  "id": "dingtalk-message-v2",
+  "name": "钉钉内部机器人",
+  "type": "action",
+  "description": "通过钉钉机器人发送标准文本或 Markdown 消息（基于 v1.0 API）",
+  "version": "1.0.0",
+  "category": "tool",
+  "icon": "https://img.alicdn.com/tfs/TB1S4Z9SXXXXXbHXXXXXXXXXXXX-200-200.png",
+  "iconColor": "#007fff",
+  "properties": [
+    {
+      "name": "clientId",
+      "label": "AppKey (Client ID)",
+      "type": "string",
+      "placeholder": "请输入应用的 AppKey",
+      "required": true
+    },
+    {
+      "name": "clientSecret",
+      "label": "AppSecret",
+      "type": "string",
+      "placeholder": "请输入应用的 AppSecret",
+      "required": true,
+      "secret": true
+    },
+    {
+      "name": "robotCode",
+      "label": "机器人编码 (RobotCode)",
+      "type": "string",
+      "placeholder": "通常与 AppKey 相同",
+      "required": true
+    },
+    {
+      "name": "targetType",
+      "label": "推送目标类型",
+      "type": "select",
+      "options": [
+        { "label": "个人", "value": "OTO" },
+        { "label": "群聊", "value": "GROUP" }
+      ],
+      "default": "OTO",
+      "required": true
+    },
+    {
+      "name": "targetId",
+      "label": "推送目标 ID",
+      "type": "string",
+      "placeholder": "用户 UserID 或 群聊 CID (以 cid 开头)",
+      "required": false
+    },
+    {
+      "name": "queryWord",
+      "label": "搜索关键词 (仅个人模式)",
+      "type": "string",
+      "placeholder": "输入姓名、拼音或手机号搜索 UserID",
+      "required": false,
+      "visible": "targetType === 'OTO'"
+    },
+    {
+      "name": "msgType",
+      "label": "消息类型",
+      "type": "select",
+      "options": [
+        { "label": "文本 (Text)", "value": "text" },
+        { "label": "Markdown", "value": "markdown" }
+      ],
+      "default": "markdown",
+      "required": true
+    },
+    {
+      "name": "title",
+      "label": "消息标题",
+      "type": "string",
+      "placeholder": "Markdown 消息的标题",
+      "visible": "msgType === 'markdown'",
+      "required": false
+    },
+    {
+      "name": "content",
+      "label": "消息内容",
+      "type": "textarea",
+      "placeholder": "请输入消息正文内容（Markdown 模式下支持 Markdown 语法）",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "success",
+      "label": "是否成功",
+      "type": "boolean"
+    },
+    {
+      "name": "result",
+      "label": "推送结果",
+      "type": "object"
+    }
+  ]
+}

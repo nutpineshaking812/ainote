@@ -1,0 +1,41 @@
+{
+  "id": "readUserProperty",
+  "name": "读取个人变量",
+  "type": "action",
+  "category": "variables",
+  "icon": "DatabaseOutlined",
+  "iconColor": "#52c41a",
+  "description": "从用户云端变量中读取指定变量的值（支持自动生命周期判断）。",
+  "properties": [
+    {
+      "name": "key",
+      "label": "变量键名",
+      "type": "variableInput",
+      "required": true,
+      "placeholder": "请输入变量名称 (例如: money)"
+    },
+    {
+      "name": "defaultValue",
+      "label": "默认值",
+      "type": "string",
+      "required": false,
+      "default": "0",
+      "placeholder": "变量不存在或已过期时返回此默认值"
+    },
+    {
+      "name": "ttl",
+      "label": "续期时间 (TTL, 秒)",
+      "type": "number",
+      "required": false,
+      "default": -1,
+      "placeholder": "选填。如有数据，在读取成功后自动将变量的生存时间延长为此秒数。-1或留空代表不续期。"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "value",
+      "label": "变量值",
+      "type": "string"
+    }
+  ]
+}

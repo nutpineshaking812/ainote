@@ -1,0 +1,102 @@
+.status-stack {
+  display: flex;
+  align-items: center;
+  position: relative;
+  --status-stack-hover-gap: 12px;
+}
+
+.status-stack-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: default;
+  transition:
+    transform 0.2s ease,
+    margin-inline-start 0.35s ease;
+  z-index: var(--status-stack-order, 1);
+  margin-inline-start: var(--status-stack-offset, 0);
+}
+
+.status-stack-item:focus-within,
+.status-stack-item:hover {
+  z-index: 999;
+}
+
+.status-stack:hover .status-stack-item:not(:first-child) {
+  margin-inline-start: var(--status-stack-hover-gap, 12px);
+}
+
+.status-stack-item__bubble {
+  width: var(--status-stack-size, 36px);
+  height: var(--status-stack-size, 36px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.status-stack-item:hover .status-stack-item__bubble {
+  transform: scale(1.05);
+}
+
+.status-stack-item__label {
+  position: absolute;
+  top: calc(var(--status-stack-size, 36px) + 10px);
+  left: 50%;
+  transform: translate(-50%, -8px);
+  opacity: 0;
+  pointer-events: none;
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 999px;
+  padding: 8px 16px;
+  min-height: calc(var(--status-stack-size, 36px) * 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.status-stack-item__label-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-stack-item__label-desc {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.status-stack-item:hover .status-stack-item__label,
+.status-stack-item:focus-within .status-stack-item__label {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.status-stack-item--enter {
+  animation: status-stack-slide-in 0.3s ease-out;
+}
+
+@keyframes status-stack-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
