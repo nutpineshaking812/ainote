@@ -11,8 +11,12 @@ An AI agent workflow platform for building intelligent applications with visual 
 - **Public Forms & External API** — Share forms with access codes and expiry, submit data via REST API with token/API-key authentication, manage records programmatically
 - **Chart & View Builder** — AI-powered chart generation (bar, line, pie, area, table), drag-and-drop dashboard layout, real-time data visualization
 - **Data Management** — Spreadsheet-like table view with inline editing, search, sort, filter, column freeze/hide, Excel import/export
-- **Digital Workers** — Create AI agents with custom roles (Customer Support, Developer, Analyst, etc.), real-time chat with streaming responses, bind to external channels (DingTalk, WeTinker)
+- **Digital Workers** — Create AI agents with custom roles (Customer Support, Developer, Analyst, etc.), real-time chat with streaming responses
 - **Digital Worker API & SDK** — Embed workers via iframe or JS SDK (`window.AiNoteChat`), streaming chat API for third-party integration, channel routing by tag
+- **Third-Party Gateway** — Provider-based channel architecture for seamless integration with external platforms. Currently supports:
+  - **DingTalk (钉钉)**: Stream Mode long connection, interactive cards with real-time streaming AI responses, voice message support. Connect DingTalk bots to digital workers for automated conversations
+  - **WeTinker (企微运营)**: SSE-based messaging, intelligent tag-based worker routing, auto-reconnect with exponential backoff
+  - Extensible provider interface — add new channels (Slack, Feishu, etc.) by implementing provider contracts
 - **Knowledge Base** — Document ingestion, vector search (pgvector), and RAG pipelines
 - **AI Agent Studio** — Multi-model LLM integration (OpenAI, DeepSeek, Qwen, etc.), tool orchestration
 - **Block-Note Editor** — Rich-text collaborative editor with AI assistance
@@ -416,9 +420,11 @@ ainote/
 │   ├── config/                # Configuration (env, db, logger)
 │   ├── routes/                # API routes
 │   │   ├── forms/             # Form CRUD, publish, public data API
+│   │   ├── channels/             # Gateway channel management (DingTalk, WeTinker)
 │   │   ├── digital-workers/   # Digital worker management & streaming chat
 │   │   └── workflows/         # Workflow engine API
 │   ├── services/              # Business logic services
+│   │   └── gateway/            # Gateway service: providers, sessions, monitor
 │   ├── controllers/           # Request handlers
 │   ├── middleware/             # Express middleware
 │   ├── temporal/              # Temporal workflows & activities

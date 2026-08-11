@@ -11,8 +11,12 @@
 - **公开表单与外部 API** — 支持访问码+有效期公开发布表单，通过 REST API 以 Token/API Key 认证方式提交和查询数据
 - **图表与视图构建器** — AI 驱动的图表生成（柱状图、折线图、饼图、面积图、表格），拖拽式仪表盘布局，实时数据可视化
 - **数据管理** — 类似电子表格的表格视图，支持行内编辑、搜索、排序、筛选、列冻结/隐藏、Excel 导入导出
-- **数字员工** — 创建自定义角色的 AI 智能体（客服、开发、分析师等），实时流式对话，绑定外部渠道（钉钉、WeTinker）
+- **数字员工** — 创建自定义角色的 AI 智能体（客服、开发、分析师等），实时流式对话
 - **数字员工 API 与 SDK** — 通过 iframe 或 JS SDK (`window.AiNoteChat`) 嵌入员工，流式对话 API 供第三方集成，支持按标签路由分发
+- **第三方网关** — 基于 Provider 的可扩展渠道架构，轻松接入外部平台对话。当前支持：
+  - **钉钉（DingTalk）**: Stream 模式长连接，互动卡片实时流式渲染 AI 回复，支持语音消息。将钉钉机器人接入数字员工实现自动化对话
+  - **WeTinker（企微私域运营）**: SSE 长连接消息，智能标签路由员工，指数退避断线重连
+  - 可扩展的 Provider 接口 — 只需实现 Provider 协议即可新增渠道（Slack、飞书等）
 - **知识库** — 文档导入、向量检索（pgvector）与 RAG 管道
 - **AI 智能体工作室** — 多模型 LLM 集成（OpenAI、DeepSeek、Qwen 等），工具编排
 - **块笔记编辑器** — 支持 AI 辅助的富文本协作编辑器
@@ -417,9 +421,11 @@ ainote/
 │   ├── config/                # 配置（环境变量、数据库、日志）
 │   ├── routes/                # API 路由
 │   │   ├── forms/             # 表单 CRUD、发布、公开数据 API
+│   │   ├── channels/             # 网关渠道管理（钉钉、WeTinker）
 │   │   ├── digital-workers/   # 数字员工管理与流式对话
 │   │   └── workflows/         # 工作流引擎 API
 │   ├── services/              # 业务逻辑服务
+│   │   └── gateway/            # 网关服务：Provider、会话、监控
 │   ├── controllers/           # 请求处理器
 │   ├── middleware/             # Express 中间件
 │   ├── temporal/              # Temporal 工作流与活动
