@@ -1,5 +1,7 @@
 # AINote — AI Agent Workflow Platform
 
+[中文文档](README.zh-CN.md)
+
 An AI agent workflow platform for building intelligent applications with visual flow orchestration, knowledge bases, and multi-model LLM integration.
 
 ## Features
