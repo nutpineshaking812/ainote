@@ -18,7 +18,7 @@ jobs:
         service:
           - name: postgres
             context: ./docker/postgres
-            dockerfile: Dockerfile
+            dockerfile: docker/postgres/Dockerfile
           - name: backend
             context: .
             dockerfile: server/Dockerfile
@@ -27,7 +27,7 @@ jobs:
             dockerfile: client/Dockerfile
           - name: python
             context: ./python
-            dockerfile: Dockerfile
+            dockerfile: python/Dockerfile
 
     permissions:
       contents: read
