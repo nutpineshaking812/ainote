@@ -31,7 +31,7 @@ services:
     ports:
       - "${PG_PORT:-5432}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/data:/var/lib/postgresql/data
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB:-ainote} -U ${POSTGRES_USER:-ainote}"]
@@ -138,9 +138,6 @@ services:
       - "${PYTHON_PORT:-6010}:6010"
     networks:
       - ainote-network
-
-volumes:
-  pgdata:
 
 networks:
   ainote-network:
