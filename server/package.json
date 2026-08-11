@@ -54,6 +54,7 @@
     "deepagents": "^1.10.5",
     "dingtalk-stream": "^2.1.6-beta.1",
     "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
     "exceljs": "^4.4.0",
     "express": "^5.1.0",
@@ -85,7 +86,6 @@
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "@types/node": "^26.0.0",
-    "drizzle-kit": "^0.31.10",
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
