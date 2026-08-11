@@ -66,3 +66,6 @@ RUN apt-get update && \
     # 清理
     ldconfig && \
     rm -rf /var/lib/apt/lists/* scws-dict-chs-utf8.tar.bz2 dict.utf8.xdb
+
+# 内置数据库初始化脚本（扩展、Schema、中文分词配置）
+COPY init-scripts/ /docker-entrypoint-initdb.d/

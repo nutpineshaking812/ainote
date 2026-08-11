@@ -32,6 +32,50 @@ An AI agent workflow platform for building intelligent applications with visual 
 └────────┘
 ```
 
+## Quick Start (GHCR Images) — Easiest
+
+Deploy with pre-built images from GitHub Container Registry. No source code, no build tools, no Node.js needed. Only Docker required.
+
+> **Private repository?** Login first: `docker login ghcr.io -u YOUR_USERNAME`
+
+```bash
+# 1. Download deployment files
+curl -O https://raw.githubusercontent.com/yangzc/ainote/main/docker-compose.ghcr.yml
+curl -O https://raw.githubusercontent.com/yangzc/ainote/main/.env.example
+mkdir -p server
+curl -o server/.env.example https://raw.githubusercontent.com/yangzc/ainote/main/server/.env.example
+
+# 2. Prepare configuration
+cp .env.example .env
+cp server/.env.example server/.env
+
+# 3. Edit the configs — at minimum set JWT_SECRET and one LLM API key
+#    .env          → infrastructure (ports, DB password)
+#    server/.env   → application (LLM keys, JWT secret, etc.)
+
+# 4. Start all services
+docker compose -f docker-compose.ghcr.yml up -d
+
+# 5. Access
+# Frontend: http://localhost:8081
+# Backend:  http://localhost:5001
+```
+
+**You only need these 3 files:**
+| File | Purpose |
+|------|---------|
+| `docker-compose.ghcr.yml` | Docker orchestration with pre-built images |
+| `.env` | Infrastructure variables (ports, DB credentials) |
+| `server/.env` | Application config (LLM API keys, JWT secret) |
+
+The stack includes: PostgreSQL (with pgvector, AGE, zhparser), Temporal server, backend, frontend, and Python Markitdown service — all running as containers.
+
+---
+
+## Quick Start (Docker Compose — from source)
+
+Build images locally from source. Requires cloning the repository and Docker.
+
 ## Prerequisites
 
 | Dependency | Version | Required | Note |
@@ -42,7 +86,7 @@ An AI agent workflow platform for building intelligent applications with visual 
 | PostgreSQL | ≥ 15 | Required | With pgvector extension |
 | Temporal | 1.24+ | Recommended | Workflow engine |
 
-## Quick Start (Docker Compose)
+### Docker Compose (from source)
 
 The fastest way to get everything running:
 

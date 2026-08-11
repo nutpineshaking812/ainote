@@ -1,0 +1,147 @@
+# ═══════════════════════════════════════════════════════
+# AINote - 用户部署文件（直接拉取 GHCR 镜像，无需源码）
+#
+# 准备:
+#   1. cp .env.example .env          # Docker 基础设施变量
+#   2. mkdir -p server
+#   3. cp server/.env.example server/.env  # 应用配置（API Key 等）
+#   4. 编辑上述两个 .env 文件
+#
+# 启动:
+#   docker compose -f docker-compose.ghcr.yml up -d
+#
+# 访问: http://localhost:8081
+# ═══════════════════════════════════════════════════════
+
+name: ainote-stack
+
+services:
+  # ──────────────────────────────────────────
+  # Infrastructure
+  # ──────────────────────────────────────────
+
+  # 1. PostgreSQL (pgvector + Apache AGE + zhparser 中文分词)
+  pg_unified:
+    image: ghcr.io/yangzc/ainote-postgres:latest
+    container_name: ainote-postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:-ainote}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-ainote}"
+      POSTGRES_DB: "${POSTGRES_DB:-ainote}"
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB:-ainote} -U ${POSTGRES_USER:-ainote}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ainote-network
+
+  # 2. Temporal Server
+  temporal-server:
+    image: temporalio/auto-setup:1.24
+    container_name: temporal-server
+    restart: always
+    depends_on:
+      pg_unified:
+        condition: service_healthy
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-ainote}
+      - POSTGRES_PWD=${POSTGRES_PASSWORD:-ainote}
+      - POSTGRES_SEEDS=ainote-postgres
+      - DB_NAME=temporal
+      - VISIBILITY_DB_NAME=temporal_visibility
+      - ENABLE_ES=false
+    ports:
+      - "${TEMPORAL_PORT:-7233}:7233"
+    deploy:
+      resources:
+        limits:
+          memory: 450M
+    networks:
+      - ainote-network
+
+  # 3. Temporal UI（可选: docker compose --profile debug up）
+  temporal-ui:
+    profiles: ["debug"]
+    image: temporalio/ui:latest
+    container_name: temporal-ui
+    restart: always
+    depends_on:
+      temporal-server:
+        condition: service_started
+    environment:
+      - TEMPORAL_ADDRESS=temporal-server:7233
+    ports:
+      - "${TEMPORAL_UI_PORT:-8233}:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 150M
+    networks:
+      - ainote-network
+
+  # ──────────────────────────────────────────
+  # Application
+  # ──────────────────────────────────────────
+
+  # 4. Backend
+  backend:
+    image: ghcr.io/yangzc/ainote-backend:latest
+    container_name: ainote-backend
+    restart: always
+    depends_on:
+      pg_unified:
+        condition: service_healthy
+      temporal-server:
+        condition: service_started
+      python-service:
+        condition: service_started
+    env_file:
+      - ./server/.env
+    environment:
+      NODE_ENV: "${NODE_ENV:-production}"
+      PORT: "${BACKEND_PORT:-5001}"
+      VECTOR_POSTGRES_URL: "postgresql://${POSTGRES_USER:-ainote}:${POSTGRES_PASSWORD:-ainote}@ainote-postgres:5432/${POSTGRES_DB:-ainote}"
+      TEMPORAL_ADDRESS: "temporal-server:7233"
+      MEMORY_PROVIDER: "pgvector"
+      MARKITDOWN_SERVICE_URL: "http://ainote-python:6010"
+    ports:
+      - "${BACKEND_PORT:-5001}:5001"
+    networks:
+      - ainote-network
+
+  # 5. Frontend
+  frontend:
+    image: ghcr.io/yangzc/ainote-frontend:latest
+    container_name: ainote-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+    networks:
+      - ainote-network
+
+  # 6. Python Service (Markitdown)
+  python-service:
+    image: ghcr.io/yangzc/ainote-python:latest
+    container_name: ainote-python
+    restart: always
+    ports:
+      - "${PYTHON_PORT:-6010}:6010"
+    networks:
+      - ainote-network
+
+volumes:
+  pgdata:
+
+networks:
+  ainote-network:
+    name: ainote-network
