@@ -7,6 +7,9 @@ An AI agent workflow platform for building intelligent applications with visual 
 ## Features
 
 - **Visual Workflow Editor** — Drag-and-drop flow builder with branching, loops, and AI nodes
+- **Drag-and-Drop Form Builder** — Build forms with 16+ field types (text, number, date, file upload, rich text, etc.), flexible grid layout, validation rules, publish and collect responses
+- **Chart & View Builder** — AI-powered chart generation (bar, line, pie, area, table), drag-and-drop dashboard layout, real-time data visualization
+- **Data Management** — Spreadsheet-like table view with inline editing, search, sort, filter, column freeze/hide, Excel import/export
 - **Knowledge Base** — Document ingestion, vector search (pgvector), and RAG pipelines
 - **AI Agent Studio** — Multi-model LLM integration (OpenAI, DeepSeek, Qwen, etc.), tool orchestration
 - **Block-Note Editor** — Rich-text collaborative editor with AI assistance
@@ -392,7 +395,13 @@ ainote/
 │   └── src/
 │       ├── api/               # API client
 │       ├── components/        # Shared UI components
-│       ├── pages/             # Route pages
+│       ├── features/
+│       │   ├── form-builder/  # Drag-and-drop form builder (16+ field types)
+│       │   ├── views/         # Chart & dashboard view builder
+│       │   └── data-management/# Table view, inline editing, Excel import/export
+│       ├── pages/
+│       │   ├── form/          # Form designer, publish, data management
+│       │   ├── views/         # View & chart designer
 │       │   └── workflow/      # Visual workflow editor
 │       ├── i18n.js            # Internationalization
 │       └── sdk/               # Embeddable SDK
