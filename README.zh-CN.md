@@ -8,8 +8,11 @@
 
 - **可视化工作流编辑器** — 拖拽式流程搭建，支持分支、循环和 AI 节点
 - **拖拽式表单构建器** — 16+ 种字段类型（文本、数字、日期、文件上传、富文本等），灵活栅格布局，校验规则，发布与收集数据
+- **公开表单与外部 API** — 支持访问码+有效期公开发布表单，通过 REST API 以 Token/API Key 认证方式提交和查询数据
 - **图表与视图构建器** — AI 驱动的图表生成（柱状图、折线图、饼图、面积图、表格），拖拽式仪表盘布局，实时数据可视化
 - **数据管理** — 类似电子表格的表格视图，支持行内编辑、搜索、排序、筛选、列冻结/隐藏、Excel 导入导出
+- **数字员工** — 创建自定义角色的 AI 智能体（客服、开发、分析师等），实时流式对话，绑定外部渠道（钉钉、WeTinker）
+- **数字员工 API 与 SDK** — 通过 iframe 或 JS SDK (`window.AiNoteChat`) 嵌入员工，流式对话 API 供第三方集成，支持按标签路由分发
 - **知识库** — 文档导入、向量检索（pgvector）与 RAG 管道
 - **AI 智能体工作室** — 多模型 LLM 集成（OpenAI、DeepSeek、Qwen 等），工具编排
 - **块笔记编辑器** — 支持 AI 辅助的富文本协作编辑器
@@ -402,14 +405,20 @@ ainote/
 │       │   └── data-management/# 表格视图、行内编辑、Excel 导入导出
 │       ├── pages/
 │       │   ├── form/          # 表单设计、发布、数据管理
+│       │   ├── public-form/     # 公开表单分享与访问码
 │       │   ├── views/         # 视图与图表设计器
-│       │   └── workflow/      # 可视化工作流编辑器
+│       │   ├── workflow/      # 可视化工作流编辑器
+│       │   └── digital-worker/  # 数字员工（AI 智能体）对话与管理
 │       ├── i18n.js            # 国际化
-│       └── sdk/               # 可嵌入 SDK
+│       ├── channels/           # 渠道集成（钉钉、WeTinker 等）
+│       └── sdk/               # 可嵌入 SDK（AiNoteChat）
 ├── server/                    # Node.js/Express 后端
 │   ├── index.js               # 应用入口
 │   ├── config/                # 配置（环境变量、数据库、日志）
 │   ├── routes/                # API 路由
+│   │   ├── forms/             # 表单 CRUD、发布、公开数据 API
+│   │   ├── digital-workers/   # 数字员工管理与流式对话
+│   │   └── workflows/         # 工作流引擎 API
 │   ├── services/              # 业务逻辑服务
 │   ├── controllers/           # 请求处理器
 │   ├── middleware/             # Express 中间件

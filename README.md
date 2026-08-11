@@ -7,9 +7,12 @@ An AI agent workflow platform for building intelligent applications with visual 
 ## Features
 
 - **Visual Workflow Editor** — Drag-and-drop flow builder with branching, loops, and AI nodes
-- **Drag-and-Drop Form Builder** — Build forms with 16+ field types (text, number, date, file upload, rich text, etc.), flexible grid layout, validation rules, publish and collect responses
+- **Drag-and-Drop Form Builder** — 16+ field types (text, number, date, file upload, rich text, etc.), flexible grid layout, validation rules, publish and collect responses
+- **Public Forms & External API** — Share forms with access codes and expiry, submit data via REST API with token/API-key authentication, manage records programmatically
 - **Chart & View Builder** — AI-powered chart generation (bar, line, pie, area, table), drag-and-drop dashboard layout, real-time data visualization
 - **Data Management** — Spreadsheet-like table view with inline editing, search, sort, filter, column freeze/hide, Excel import/export
+- **Digital Workers** — Create AI agents with custom roles (Customer Support, Developer, Analyst, etc.), real-time chat with streaming responses, bind to external channels (DingTalk, WeTinker)
+- **Digital Worker API & SDK** — Embed workers via iframe or JS SDK (`window.AiNoteChat`), streaming chat API for third-party integration, channel routing by tag
 - **Knowledge Base** — Document ingestion, vector search (pgvector), and RAG pipelines
 - **AI Agent Studio** — Multi-model LLM integration (OpenAI, DeepSeek, Qwen, etc.), tool orchestration
 - **Block-Note Editor** — Rich-text collaborative editor with AI assistance
@@ -401,14 +404,20 @@ ainote/
 │       │   └── data-management/# Table view, inline editing, Excel import/export
 │       ├── pages/
 │       │   ├── form/          # Form designer, publish, data management
+│       │   ├── public-form/     # Public form sharing & access code
 │       │   ├── views/         # View & chart designer
-│       │   └── workflow/      # Visual workflow editor
+│       │   ├── workflow/      # Visual workflow editor
+│       │   └── digital-worker/  # Digital worker (AI agent) chat & management
 │       ├── i18n.js            # Internationalization
-│       └── sdk/               # Embeddable SDK
+│       ├── channels/           # Channel integrations (DingTalk, WeTinker, etc.)
+│       └── sdk/               # Embeddable SDK (AiNoteChat)
 ├── server/                    # Node.js/Express backend
 │   ├── index.js               # App entry point
 │   ├── config/                # Configuration (env, db, logger)
 │   ├── routes/                # API routes
+│   │   ├── forms/             # Form CRUD, publish, public data API
+│   │   ├── digital-workers/   # Digital worker management & streaming chat
+│   │   └── workflows/         # Workflow engine API
 │   ├── services/              # Business logic services
 │   ├── controllers/           # Request handlers
 │   ├── middleware/             # Express middleware
