@@ -2,18 +2,40 @@
 
 [English](README.md)
 
+<div align="center">
+
+[![GitHub Stars](https://img.shields.io/github/stars/yangzc/ainote?style=flat-square&color=blue)](https://github.com/yangzc/ainote)
+[![License: MIT](https://img.shields.io/github/license/yangzc/ainote?style=flat-square&color=green)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/yangzc/ainote/pulls)
+[![Docker](https://img.shields.io/badge/Docker-GHCR%20images-2496ED?style=flat-square&logo=docker&logoColor=white)](https://github.com/yangzc/ainote/pkgs)
+
+</div>
+
 一款 AI 智能体工作流平台，支持可视化流程编排、知识库管理以及多模型 LLM 集成，帮助您构建智能应用。
 
 ## 界面截图
 
-![工作流编辑器](docs/screenshots/workflow.png)
+<div align="center">
 
-![表单设计器](docs/screenshots/form-builder.png)
-![数字员工对话](docs/screenshots/digital-worker.png)
+### 工作流编辑器与表单设计器
 
-![仪表盘与图表](docs/screenshots/dashboard.png)
+| 工作流编辑器 | 表单设计器 |
+|:---:|:---:|
+| <img src="docs/screenshots/workflow.jpg" alt="工作流编辑器" width="440"/> | <img src="docs/screenshots/form-builder.jpg" alt="表单设计器" width="440"/> |
 
-![桌面客户端](docs/screenshots/desktop-client.png)
+### 数字员工与桌面客户端
+
+| 数字员工对话 | 桌面客户端（Tauri） |
+|:---:|:---:|
+| <img src="docs/screenshots/digital-worker.jpg" alt="数字员工对话" width="440"/> | <img src="docs/screenshots/desktop-client.jpg" alt="桌面客户端" width="440"/> |
+
+### 钉钉机器人
+
+直接在钉钉内与你的 AI 数字员工对话。
+
+<img src="docs/screenshots/dingtalk-bot.jpg" alt="钉钉机器人" width="300"/>
+
+</div>
 
 ## 功能特性
 

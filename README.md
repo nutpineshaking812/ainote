@@ -2,18 +2,40 @@
 
 [中文文档](README.zh-CN.md)
 
+<div align="center">
+
+[![GitHub Stars](https://img.shields.io/github/stars/yangzc/ainote?style=flat-square&color=blue)](https://github.com/yangzc/ainote)
+[![License: MIT](https://img.shields.io/github/license/yangzc/ainote?style=flat-square&color=green)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/yangzc/ainote/pulls)
+[![Docker](https://img.shields.io/badge/Docker-GHCR%20images-2496ED?style=flat-square&logo=docker&logoColor=white)](https://github.com/yangzc/ainote/pkgs)
+
+</div>
+
 An AI agent workflow platform for building intelligent applications with visual flow orchestration, knowledge bases, and multi-model LLM integration.
 
 ## Screenshots
 
-![Workflow Editor](docs/screenshots/workflow.png)
+<div align="center">
 
-![Form Builder](docs/screenshots/form-builder.png)
-![Digital Worker Chat](docs/screenshots/digital-worker.png)
+### Workflow Editor & Form Builder
 
-![Dashboard & Charts](docs/screenshots/dashboard.png)
+| Workflow Editor | Form Builder |
+|:---:|:---:|
+| <img src="docs/screenshots/workflow.jpg" alt="Workflow Editor" width="440"/> | <img src="docs/screenshots/form-builder.jpg" alt="Form Builder" width="440"/> |
 
-![Desktop Client](docs/screenshots/desktop-client.png)
+### Digital Worker & Desktop Client
+
+| Digital Worker Chat | Desktop Client (Tauri) |
+|:---:|:---:|
+| <img src="docs/screenshots/digital-worker.jpg" alt="Digital Worker Chat" width="440"/> | <img src="docs/screenshots/desktop-client.jpg" alt="Desktop Client" width="440"/> |
+
+### DingTalk Bot
+
+Chat with your AI digital worker directly inside DingTalk.
+
+<img src="docs/screenshots/dingtalk-bot.jpg" alt="DingTalk Bot" width="300"/>
+
+</div>
 
 ## Features
 
