@@ -4,6 +4,17 @@
 
 An AI agent workflow platform for building intelligent applications with visual flow orchestration, knowledge bases, and multi-model LLM integration.
 
+## Screenshots
+
+![Workflow Editor](docs/screenshots/workflow.png)
+
+![Form Builder](docs/screenshots/form-builder.png)
+![Digital Worker Chat](docs/screenshots/digital-worker.png)
+
+![Dashboard & Charts](docs/screenshots/dashboard.png)
+
+![Desktop Client](docs/screenshots/desktop-client.png)
+
 ## Features
 
 - **Visual Workflow Editor** — Drag-and-drop flow builder with branching, loops, and AI nodes

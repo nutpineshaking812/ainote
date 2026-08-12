@@ -4,6 +4,17 @@
 
 一款 AI 智能体工作流平台，支持可视化流程编排、知识库管理以及多模型 LLM 集成，帮助您构建智能应用。
 
+## 界面截图
+
+![工作流编辑器](docs/screenshots/workflow.png)
+
+![表单设计器](docs/screenshots/form-builder.png)
+![数字员工对话](docs/screenshots/digital-worker.png)
+
+![仪表盘与图表](docs/screenshots/dashboard.png)
+
+![桌面客户端](docs/screenshots/desktop-client.png)
+
 ## 功能特性
 
 - **可视化工作流编辑器** — 拖拽式流程搭建，支持分支、循环和 AI 节点
